@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,21 +6,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>E-Shop</title>
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-    integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
-    integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
-
-  <link rel="stylesheet" href="static/css/fontawesome.css">
-  <link rel="stylesheet" href="static/js/jquery-3.4.1.js">
-  <link rel="stylesheet" href="static/css/app.css">
+  <link href="static/css/bootstrap.css" rel="stylesheet">
+  <link href="static/css/bootstrap-theme.css" rel="stylesheet">
+  <link href="static/css/fontawesome.css" rel="stylesheet">
+  <link href="static/css/app.css" rel="stylesheet">
 </head>
 
 <body>
   <header>
+    <!-- TODO Разобраться с навигацией -->
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -34,11 +28,11 @@
           <a class="navbar-brand" href="#">E-Shop</a>
         </div>
         <div class="collapse navbar-collapse" id="ishopNavigation">
-          <ul class="nav navbar-nav navbar-right">
+          <ul id="currentShoppingCart" class="nav navbar-nav navbar-right d-none">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                aria-expanded="false"><i class="fab fa-cc-visa"></i>Shoping card (<span
-                  class="total-count">0</span>)<span class="caret"></span></a>
+                aria-expanded="false"><i class="fab fa-cc-visa"></i>Shoping card
+                (<span class="total-count">0</span>)<span class="caret"></span></a>
               <div class="dropdown-menu shooping-card-desc">
                 Total count: <span class="total-count">0</span><br>
                 Total cost: <span class="total-cost">0</span><br>
@@ -46,7 +40,8 @@
               </div>
             </li>
           </ul>
-          <li><a href="#" class="btn btn-primary navbar-btn navbar-right sign-in"><i class="fab fa-facebook-square"></i> Sign in
+          <li><a href="#" class="btn btn-primary navbar-btn navbar-right sign-in"><i class="fab fa-facebook-square"></i>
+              Sign in
             </a></li>
         </div>
       </div>
@@ -95,7 +90,8 @@
                 <label><input type="checkbox" id="allProducers">All</label>
                 <div class="form-group">
                   <div class="checkbox">
-                    <label><input type="checkbox" name="producers" value="1" class="search-option">Samsung (18)</label>
+                    <label><input type="checkbox" name="producers" value="1" class="search-option">Samsung
+                      (18)</label>
                   </div>
                 </div>
                 <div class="form-group">
@@ -125,7 +121,7 @@
         <div id="productList">
           <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="panel panel-default product">
+              <div id="product1" class="panel panel-default product">
                 <div class="panel-body">
                   <div class="thumbnail">
                     <img src="img/iphone.png" alt="..." class="img-thumbnail">
@@ -140,7 +136,7 @@
                   <div class="price">$2341</div>
                   <div class="row code-price">
                     <div class="code col-6">Serial code:2341</div>
-                    <a class="col-6 pull-right btn btn-primary">Buy now</a>
+                    <a class="col-6 pull-right btn btn-primary buy-btn" data-id-product="1">Buy now</a>
                   </div>
                   <div class="list-group">
                     <span class="list-group-item"> <small>Category:</small> <span
@@ -151,7 +147,7 @@
               </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="panel panel-default product">
+              <div id="product3" class="panel panel-default product">
                 <div class="panel-body">
                   <div class="thumbnail">
                     <img src="img/iphone.png" alt="..." class="img-thumbnail">
@@ -166,7 +162,7 @@
                   <div class="price">$2341</div>
                   <div class="row code-price">
                     <div class="code col-6">Serial code:2341</div>
-                    <a class="col-6 pull-right btn btn-primary">Buy now</a>
+                    <a class="col-6 pull-right btn btn-primary buy-btn" data-id-product="3">Buy now</a>
                   </div>
                   <div class="list-group">
                     <span class="list-group-item"> <small>Category:</small> <span
@@ -177,7 +173,7 @@
               </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="panel panel-default product">
+              <div id="product4" class="panel panel-default product">
                 <div class="panel-body">
                   <div class="thumbnail">
                     <img src="img/iphone.png" alt="..." class="img-thumbnail">
@@ -192,7 +188,7 @@
                   <div class="price">$2341</div>
                   <div class="row code-price">
                     <div class="code col-6">Serial code:2341</div>
-                    <a class="col-6 pull-right btn btn-primary">Buy now</a>
+                    <a class="col-6 pull-right btn btn-primary buy-btn" data-id-product="4">Buy now</a>
                   </div>
                   <div class="list-group">
                     <span class="list-group-item"> <small>Category:</small> <span
@@ -203,7 +199,7 @@
               </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="panel panel-default product">
+              <div id="product5" class="panel panel-default product">
                 <div class="panel-body">
                   <div class="thumbnail">
                     <img src="img/iphone.png" alt="..." class="img-thumbnail">
@@ -218,7 +214,7 @@
                   <div class="price">$2341</div>
                   <div class="row code-price">
                     <div class="code col-6">Serial code:2341</div>
-                    <a class="col-6 pull-right btn btn-primary">Buy now</a>
+                    <a class="col-6 pull-right btn btn-primary buy-btn" data-id-product="5">Buy now</a>
                   </div>
                   <div class="list-group">
                     <span class="list-group-item"> <small>Category:</small> <span
@@ -229,7 +225,7 @@
               </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="panel panel-default product">
+              <div id="product7" class="panel panel-default product">
                 <div class="panel-body">
                   <div class="thumbnail">
                     <img src="img/iphone.png" alt="..." class="img-thumbnail">
@@ -244,7 +240,7 @@
                   <div class="price">$2341</div>
                   <div class="row code-price">
                     <div class="code col-6">Serial code:2341</div>
-                    <a class="col-6 pull-right btn btn-primary">Buy now</a>
+                    <a class="col-6 pull-right btn btn-primary buy-btn" data-id-product="7">Buy now</a>
                   </div>
                   <div class="list-group">
                     <span class="list-group-item"> <small>Category:</small> <span
@@ -255,7 +251,7 @@
               </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="panel panel-default product">
+              <div id="product35" class="panel panel-default product">
                 <div class="panel-body">
                   <div class="thumbnail">
                     <img src="img/iphone.png" alt="..." class="img-thumbnail">
@@ -270,7 +266,7 @@
                   <div class="price">$2341</div>
                   <div class="row code-price">
                     <div class="code col-6">Serial code:2341</div>
-                    <a class="col-6 pull-right btn btn-primary">Buy now</a>
+                    <a class="col-6 pull-right btn btn-primary buy-btn" data-id-product="35">Buy now</a>
                   </div>
                   <div class="list-group">
                     <span class="list-group-item"> <small>Category:</small> <span
@@ -281,7 +277,7 @@
               </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="panel panel-default product">
+              <div id="product22" class="panel panel-default product">
                 <div class="panel-body">
                   <div class="thumbnail">
                     <img src="img/iphone.png" alt="..." class="img-thumbnail">
@@ -296,7 +292,7 @@
                   <div class="price">$2341</div>
                   <div class="row code-price">
                     <div class="code col-6">Serial code:2341</div>
-                    <a class="col-6 pull-right btn btn-primary">Buy now</a>
+                    <a class="col-6 pull-right btn btn-primary buy-btn" data-id-product="22">Buy now</a>
                   </div>
                   <div class="list-group">
                     <span class="list-group-item"> <small>Category:</small> <span
@@ -307,7 +303,7 @@
               </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="panel panel-default product">
+              <div id="product267" class="panel panel-default product">
                 <div class="panel-body">
                   <div class="thumbnail">
                     <img src="img/iphone.png" alt="..." class="img-thumbnail">
@@ -322,7 +318,7 @@
                   <div class="price">$2341</div>
                   <div class="row code-price">
                     <div class="code col-6">Serial code:2341</div>
-                    <a class="col-6 pull-right btn btn-primary">Buy now</a>
+                    <a class="col-6 pull-right btn btn-primary buy-btn" data-id-product="267">Buy now</a>
                   </div>
                   <div class="list-group">
                     <span class="list-group-item"> <small>Category:</small> <span
@@ -333,7 +329,7 @@
               </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="panel panel-default product">
+              <div id="product213679" class="panel panel-default product">
                 <div class="panel-body">
                   <div class="thumbnail">
                     <img src="img/iphone.png" alt="..." class="img-thumbnail">
@@ -348,7 +344,7 @@
                   <div class="price">$2341</div>
                   <div class="row code-price">
                     <div class="code col-6">Serial code:2341</div>
-                    <a class="col-6 pull-right btn btn-primary">Buy now</a>
+                    <a class="col-6 pull-right btn btn-primary buy-btn" data-id-product="213679">Buy now</a>
                   </div>
                   <div class="list-group">
                     <span class="list-group-item"> <small>Category:</small> <span
@@ -359,7 +355,7 @@
               </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="panel panel-default product">
+              <div id="product212318655" class="panel panel-default product">
                 <div class="panel-body">
                   <div class="thumbnail">
                     <img src="img/iphone.png" alt="..." class="img-thumbnail">
@@ -374,7 +370,7 @@
                   <div class="price">$2341</div>
                   <div class="row code-price">
                     <div class="code col-6">Serial code:2341</div>
-                    <a class="col-6 pull-right btn btn-primary">Buy now</a>
+                    <a class="col-6 pull-right btn btn-primary buy-btn" data-id-product="212318655">Buy now</a>
                   </div>
                   <div class="list-group">
                     <span class="list-group-item"> <small>Category:</small> <span
@@ -385,7 +381,7 @@
               </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="panel panel-default product">
+              <div id="product555" class="panel panel-default product">
                 <div class="panel-body">
                   <div class="thumbnail">
                     <img src="img/iphone.png" alt="..." class="img-thumbnail">
@@ -400,7 +396,7 @@
                   <div class="price">$2341</div>
                   <div class="row code-price">
                     <div class="code col-6">Serial code:2341</div>
-                    <a class="col-6 pull-right btn btn-primary">Buy now</a>
+                    <a class="col-6 pull-right btn btn-primary buy-btn" data-id-product="555">Buy now</a>
                   </div>
                   <div class="list-group">
                     <span class="list-group-item"> <small>Category:</small> <span
@@ -411,7 +407,7 @@
               </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="panel panel-default product">
+              <div id="product11232" class="panel panel-default product">
                 <div class="panel-body">
                   <div class="thumbnail">
                     <img src="img/iphone.png" alt="..." class="img-thumbnail">
@@ -426,7 +422,7 @@
                   <div class="price">$2341</div>
                   <div class="row code-price">
                     <div class="code col-6">Serial code:2341</div>
-                    <a class="col-6 pull-right btn btn-primary">Buy now</a>
+                    <a class="col-6 pull-right btn btn-primary buy-btn" data-id-product="11232">Buy now</a>
                   </div>
                   <div class="list-group">
                     <span class="list-group-item"> <small>Category:</small> <span
@@ -438,7 +434,43 @@
             </div>
           </div>
           <div class="text-center">
+            <img id="loadMoreIndicator" src="img/loading.gif" class="d-none" alt="loading..." >
             <a id="loadMore" class="btn btn-success">Load More</a>
+          </div>
+        </div>
+        <div id="addProductPopup" class="modal fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add product to Shopping cart</h4>
+              </div>
+              <div class="modal-body row">
+                <div class="col-xs-12 col-sm-6">
+                  <div class="thumbnail">
+                    <img src="#" alt="Product image" class="product-image center-block">
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <h4 class="name">Product name</h4>
+                  <div class="list-group d-none d-sm-block">
+                    <span class="list-group-item"><small>Category:</small><span class="category">?</span></span>
+                    <span class="list-group-item"><small>Producer:</small><span class="producer">?</span></span>
+                  </div>
+                  <div class="list-group">
+                    <span class="list-group-item"><small>Price:</small><span class="price">0</span></span>
+                    <span class="list-group-item"><small>Count:</small><input type="number" class="count" value="1" min="1" max="10"></span>
+                    <span class="list-group-item"><small>Cost:</small><span class="cost">0</span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <img id="addToCartIndi" src="img/loading.gif" class="d-none" alt="loading..." >
+                <button id="addToCart" type="button" class="btn btn-primary">Add to cart</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
           </div>
         </div>
       </main>

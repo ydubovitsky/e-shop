@@ -76,6 +76,13 @@
     display: block;
 }
 
+.thumbnail .product-image {
+    /* justify-content: center; */
+    /* margin-left: 50px; */
+    width: 70%;
+    height: 70%;
+}
+
 .code-price {
     padding: 0;
     margin: 0;
