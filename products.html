@@ -56,7 +56,7 @@
           <a class="pull-left" data-toggle="collapse" href="#findProducts">Find products<span class="caret"></span></a>
         </div>
         <!-- Search -->
-        <form action="products.html">
+        <form class="search" action="products.html">
           <div id="findProducts" class="panel panel-success collapse">
             <div class="panel-heading">Find products</div>
             <div class="panel-body">
@@ -76,12 +76,10 @@
                 <label><input type="checkbox" id="allCategories">All</label>
                 <div class="form-group">
                   <div class="checkbox">
-                    <label><input type="checkbox" name="category" value="1" class="search-option">E-Book (17)</label>
+                    <label><input type="checkbox" name="category" value="0" class="search-option">E-Books (17)</label>
                   </div>
-                </div>
-                <div class="form-group">
                   <div class="checkbox">
-                    <label><input type="checkbox" name="category" value="2" class="search-option">E-Book (23)</label>
+                    <label><input type="checkbox" name="category" value="1" class="search-option">Phones (23)</label>
                   </div>
                 </div>
               </div>
@@ -90,13 +88,16 @@
                 <label><input type="checkbox" id="allProducers">All</label>
                 <div class="form-group">
                   <div class="checkbox">
-                    <label><input type="checkbox" name="producers" value="1" class="search-option">Samsung
-                      (18)</label>
+                    <label><input type="checkbox" name="producers" value="0" class="search-option">Samsung (18)</label>
                   </div>
-                </div>
-                <div class="form-group">
                   <div class="checkbox">
-                    <label><input type="checkbox" name="producers" value="2" class="search-option">Apple (67)</label>
+                    <label><input type="checkbox" name="producers" value="1" class="search-option">Apple (67)</label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input type="checkbox" name="producers" value="2" class="search-option">Nokia (13)</label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input type="checkbox" name="producers" value="3" class="search-option">LG (7)</label>
                   </div>
                 </div>
               </div>
@@ -434,7 +435,7 @@
             </div>
           </div>
           <div class="text-center">
-            <img id="loadMoreIndicator" src="img/loading.gif" class="d-none" alt="loading..." >
+            <img id="loadMoreIndicator" src="img/loading.gif" class="d-none" alt="loading...">
             <a id="loadMore" class="btn btn-success">Load More</a>
           </div>
         </div>
@@ -460,13 +461,14 @@
                   </div>
                   <div class="list-group">
                     <span class="list-group-item"><small>Price:</small><span class="price">0</span></span>
-                    <span class="list-group-item"><small>Count:</small><input type="number" class="count" value="1" min="1" max="10"></span>
+                    <span class="list-group-item"><small>Count:</small><input type="number" class="count" value="1"
+                        min="1" max="10"></span>
                     <span class="list-group-item"><small>Cost:</small><span class="cost">0</span></span>
                   </div>
                 </div>
               </div>
               <div class="modal-footer">
-                <img id="addToCartIndi" src="img/loading.gif" class="d-none" alt="loading..." >
+                <img id="addToCartIndi" src="img/loading.gif" class="d-none" alt="loading...">
                 <button id="addToCart" type="button" class="btn btn-primary">Add to cart</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               </div>
