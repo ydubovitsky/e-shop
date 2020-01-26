@@ -14,36 +14,27 @@
 
 <body>
   <header>
-    <!-- TODO Разобраться с навигацией -->
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ishopNavigation"
-            aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">E-Shop</a>
-        </div>
-        <div class="collapse navbar-collapse" id="ishopNavigation">
-          <ul id="currentShoppingCart" class="nav navbar-nav navbar-right d-none">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                aria-expanded="false"><i class="fab fa-cc-visa"></i>Shoping card
-                (<span class="total-count">0</span>)<span class="caret"></span></a>
-              <div class="dropdown-menu shooping-card-desc">
-                Total count: <span class="total-count">0</span><br>
-                Total cost: <span class="total-cost">0</span><br>
-                <a href="shooping-card.html" class="btn btn-primary btn-block">Shopping basket</a>
-              </div>
-            </li>
-          </ul>
-          <li><a href="#" class="btn btn-primary navbar-btn navbar-right sign-in"><i class="fab fa-facebook-square"></i>
-              Sign in
-            </a></li>
-        </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Electronics store</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="ishopNav">
+        <ul id="currentShoppingCart" class="nav navbar-nav navbar-right hidden">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping cart (<span class="total-count">0</span>)<span class="caret"></span>
+            </a>
+            <div class="dropdown-menu shopping-cart-desc">
+              Total count: <span class="total-count">0</span><br>
+              Total cost: <span class="total-cost">0</span><br>
+              <a href="shopping-cart.html" class="btn btn-primary btn-block">View cart</a>
+            </div>
+          </li>
+        </ul>
+        <a href="#" class="btn btn-primary navbar-btn navbar-right sign-in"><i class="fa fa-facebook-official" aria-hidden="true"></i> Sign in</a>
       </div>
     </nav>
   </header>
