@@ -148,6 +148,8 @@
 }
 
 .load-indicator {
-    background: url('../img/loading.gif') no-repeat center center;
+    background: url('../../img/loading.gif') no-repeat center center;
+    height: 38px;
+    width: 38px;
     display: block;
 }
