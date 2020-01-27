@@ -8,6 +8,7 @@ $(function () {
         $("#goSearch").click(goSearch);
         $(".remove-product").click(removeProductFromCart);
         totalCostProducts();
+        //$('addToCart').click(getItemProperties);
     };
 
     /**
@@ -46,24 +47,35 @@ $(function () {
      * Добавляем товары в корзину
      */
     let addProductToCart = function () {
-        let idProduct = $("#addProductPopup").attr("data-id-product"); // считывает значение атрибута
-        let count = $("#addProductPopup .count").attr("value");
+        let idProduct = $("#addProductPopup").attr("data-id-product"); // считывает значение атрибута? Каким образом?
+        let count = parseInt($("#addProductPopup .count").attr("value"));
         $("#addToCartIndi").removeClass("d-none");
         $("#addToCart").addClass("d-none");
         setTimeout(function () {
             let data = {
-                totalCount: count,
+                totalCount: getItemProperties(), // используем внешнюю функцию
                 totalCost: 2000
             };
-            let currentCost = Number($("#currentShoppingCart .total-cost").text());
-            let currentCount = Number($("#currentShoppingCart .total-count").text());
-            $("#currentShoppingCart .total-count").text(
-                Number(currentCount) + Number(data.totalCount)
-            );
+            let currentCost = parseInt($("#currentShoppingCart .total-cost").text());
+            let currentCount = parseInt($("#currentShoppingCart .shopping-cart-desc .total-count").text());
+            $("#currentShoppingCart .shopping-cart-desc .total-count").text(currentCount + data.totalCount);
+            $("#currentShoppingCart .dropdown-toggle .total-count").text(currentCount + data.totalCount);
             $("#currentShoppingCart .total-cost").text(currentCost + data.totalCost);
             $("#currentShoppingCart").removeClass("d-none");
             $("#addProductPopup").modal("hide");
         }, 800);
+        setTimeout(function() {
+            $("#addToCartIndi").addClass("d-none");
+            $("#addToCart").removeClass("d-none");
+        }, 800);        
+    };
+
+    /**
+     * Получение количества добавляемых в корзину товаров из popup-a.
+     */
+    let getItemProperties = function() {
+        let count = parseInt($('#addProductPopup .item-properties .count').val());
+        return count;
     };
 
     let initAddToCart = function () {
