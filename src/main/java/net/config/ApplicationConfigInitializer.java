@@ -1,6 +1,7 @@
 package net.config;
 
 import net.servlet.JavaConfigServlet;
+import net.servlet.JavaConfigServletT;
 
 import javax.servlet.ServletContainerInitializer;
 import javax.servlet.ServletContext;
@@ -13,8 +14,13 @@ import java.util.Set;
  */
 public class ApplicationConfigInitializer implements ServletContainerInitializer {
     public void onStartup(Set<Class<?>> c, ServletContext ctx) throws ServletException {
+        // Явным образом создаем объект
         JavaConfigServlet servlet = new JavaConfigServlet();
         ServletRegistration.Dynamic servletConfig = ctx.addServlet("JavaConfigServlet", servlet);
         servletConfig.addMapping("/java");
+        // или можно так:
+        ServletRegistration.Dynamic servletConfigT = ctx.addServlet("JavaConfigServletT", JavaConfigServletT.class);
+        servletConfigT.addMapping("/java2");
+
     }
 }
