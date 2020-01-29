@@ -8,16 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/receive")
-public class ReceiverServlet extends HttpServlet {
+@WebServlet("/get-attr")
+public class GetAttributeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //resp.setContentType("html/text"); Если не закоментить эту строчку будет скачиваться файл
-        //! Считываем параметр из сроки запроса
-        String a = (String) req.getAttribute("password");
-        // Пишем в ответ
+        Attribute attribute = (Attribute) req.getAttribute("attribute");
+        Attribute sessionAttribute = (Attribute) req.getSession().getAttribute("session");
         PrintWriter writer = resp.getWriter();
-        writer.write("Hello from ReceiverServlet " + a);
-        //writer.close();
+        writer.write(attribute.getName() + " " + sessionAttribute.getName());
+        writer.close();
     }
 }
