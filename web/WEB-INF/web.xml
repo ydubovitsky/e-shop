@@ -23,5 +23,12 @@
         <url-pattern>/xml</url-pattern>
     </servlet-mapping>
     <!--Servlets configurations -->
+
+    <!--Settings-->
+    <!--Поддержка сессии только с помощью cookie!-->
+    <session-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+    <!--Settings-->
 </web-app>
 
