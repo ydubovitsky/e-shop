@@ -7,50 +7,64 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @WebServlet(value="/admin", initParams = {
-        @WebInitParam(name = "IP", value = "0:0:0:0:0:0:0:1"),
+        @WebInitParam(name = "ip", value = "0:0:0:0:0:0:0:2"),
+        @WebInitParam(name = "accessKey", value = "secret"),
         @WebInitParam(name = "login", value = "admin"),
         @WebInitParam(name = "password", value = "password")
 })
 public class AdminServlet extends HttpServlet {
+
+    private String ip;
+    private String accessKey;
+    private String login;
+    private String password;
+
+    /**
+     * Runs when creating the servlet, once. Initializes configuration parameters.
+     * @throws ServletException
+     */
+    @Override
+    public void init() throws ServletException {
+        ip = getServletConfig().getInitParameter("ip");
+        accessKey = getServletConfig().getInitParameter("accessKey");
+        login = getServletConfig().getInitParameter("login");
+        password = getServletConfig().getInitParameter("password");
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        if (checkingIP(req)) {
+        String ip = req.getRemoteAddr();
+        String accessKey = req.getHeader("ACCESS_KEY");
+        String login = req.getParameter("login");
+        String password = req.getParameter("password");
+        try {
+            validate(ip, accessKey, login, password);
             resp.setStatus(HttpServletResponse.SC_OK);
-            System.out.println("Login via ip " + getInitParameter("IP"));
-        }
-
-        if (checkingParameters(req, getInitParameterNames())) {
-            System.out.println("Login via " + getInitParameter("login") + getInitParameter("password"));
+            resp.getWriter().write("OK");
+        } catch (IllegalStateException e) {
+            resp.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
+            resp.getWriter().write("FAILED");
         }
     }
 
-    private boolean checkingIP(HttpServletRequest req) {
-        boolean result = false;
-        String ipAddress = req.getHeader("X-FORWARDED-FOR");
-        if (ipAddress == null) {
-            ipAddress = req.getRemoteAddr();
-            if (ipAddress.equals(getServletConfig().getInitParameter("IP"))) {
-                result = true;
-            }
+    /**
+     * Input Validation
+     * @param ip, @param accessKey, @param login, @param password - users data for validation.
+     */
+    private void validate(String ip, String accessKey, String login, String password) {
+        if (ip.equals(this.ip)) {
+            System.out.println("login via ip " + ip);
         }
-        return result;
-    }
-
-    private boolean checkingParameters(HttpServletRequest req, Enumeration<String> initParameterNames) {
-        List<String> list = new ArrayList<>();
-        while (initParameterNames.hasMoreElements()) {
-            list.add(initParameterNames.nextElement());
+        else if (login.equals(this.login) && password.equals(this.password)) {
+            System.out.println("login via login " + login + " and password " + password);
         }
-        String[] params = req.getParameterValues("param");
-        List<String> collect = Stream.of(params).collect(Collectors.toList());
-        return collect.containsAll(list);
+        else if (this.accessKey.equals(accessKey)) {
+            System.out.println("login via ip " + accessKey);
+        }
+        else {
+            throw new IllegalStateException();
+        }
     }
 }

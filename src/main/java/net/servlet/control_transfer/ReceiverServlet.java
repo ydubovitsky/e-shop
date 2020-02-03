@@ -18,6 +18,7 @@ public class ReceiverServlet extends HttpServlet {
         // Пишем в ответ
         PrintWriter writer = resp.getWriter();
         writer.write("Hello from ReceiverServlet " + a);
+        //! req.getRequestDispatcher("/forward").forward(req,resp); бесконечный цикл
         //writer.close();
     }
 }
