@@ -19,8 +19,11 @@ public class ApplicationConfigInitializer implements ServletContainerInitializer
         ServletRegistration.Dynamic servletConfig = ctx.addServlet("JavaConfigServlet", servlet);
         servletConfig.addMapping("/java");
         // или можно так:
-        ServletRegistration.Dynamic servletConfigT = ctx.addServlet("JavaConfigServletT", JavaConfigServletT.class);
-        servletConfigT.addMapping("/java2");
+        servletConfig = ctx.addServlet("JavaConfigServletT", JavaConfigServletT.class);
+        servletConfig.addMapping("/java2");
 
+//        Так делать не обязательно!
+//        ServletRegistration.Dynamic servletConfigT = ctx.addServlet("JavaConfigServletT", JavaConfigServletT.class);
+//        servletConfigT.addMapping();
     }
 }

@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+    <!--Servlets configurations-->
     <servlet>
         <servlet-name>XMLConfigServlet</servlet-name>
         <servlet-class>net.servlet.configuration.XMLConfigServlet</servlet-class>
@@ -12,5 +13,13 @@
         <servlet-name>XMLConfigServlet</servlet-name>
         <url-pattern>/xml</url-pattern>
     </servlet-mapping>
+    <!--Servlets configurations-->
+
+    <!--Settings-->
+    <!--Поддержка сессии только с помощью cookie!-->
+    <session-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+    <!--Settings-->
 </web-app>
 
