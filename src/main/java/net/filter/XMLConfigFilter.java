@@ -7,11 +7,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpFilter;
 import java.io.IOException;
 
+//TODO Не работает, не конфигурируется при помощи xml
 public class XMLConfigFilter extends HttpFilter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        System.out.println("Hello");
         chain.doFilter(req, res);
-        System.out.println("gisgoiwjgrwoijgwoi");
     }
 }
