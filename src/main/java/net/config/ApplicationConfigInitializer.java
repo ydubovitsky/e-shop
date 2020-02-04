@@ -1,12 +1,10 @@
-package net.servlet.config;
+package net.config;
 
+import net.filter.ClassConfigFilter;
 import net.servlet.configuration.JavaConfigServlet;
 import net.servlet.configuration.JavaConfigServletT;
 
-import javax.servlet.ServletContainerInitializer;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
+import javax.servlet.*;
 import java.util.Set;
 
 /**
@@ -21,6 +19,10 @@ public class ApplicationConfigInitializer implements ServletContainerInitializer
         // или можно так:
         servletConfig = ctx.addServlet("JavaConfigServletT", JavaConfigServletT.class);
         servletConfig.addMapping("/java2");
+        // filter config
+        ClassConfigFilter configFilter = new ClassConfigFilter();
+        FilterRegistration.Dynamic filterRegistration = ctx.addFilter("ClassConfigFilter", configFilter);
+        filterRegistration.addMappingForUrlPatterns(null, true, "/*");
 
 //        Так делать не обязательно!
 //        ServletRegistration.Dynamic servletConfigT = ctx.addServlet("JavaConfigServletT", JavaConfigServletT.class);

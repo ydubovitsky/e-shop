@@ -1,7 +1,7 @@
 package net.cookies;
 
 import net.model.Constants;
-import shop.model.ShoppingCart;
+import shop.entity.ShoppingCart;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

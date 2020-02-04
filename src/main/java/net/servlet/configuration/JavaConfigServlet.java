@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * This class is configured using the configuration class (net.servlet.config.ApplicationConfigInitializer)
+ * This class is configured using the configuration class (net.config.ApplicationConfigInitializer)
  */
 public class JavaConfigServlet extends HttpServlet {
     @Override

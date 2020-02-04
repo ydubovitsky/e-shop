@@ -1,25 +1,18 @@
 package shop.entity;
 
+import java.util.Objects;
+
 /**
  * Product class
  */
 public class Product {
 
     private int idProduct;
-    private String name;
     private int count;
 
     public Product(int idProduct, int count) {
         this.idProduct = idProduct;
         this.count = count;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getCount() {
@@ -36,5 +29,19 @@ public class Product {
 
     public void setIdProduct(int idProduct) {
         this.idProduct = idProduct;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+        Product product = (Product) o;
+        return getIdProduct() == product.getIdProduct() &&
+                getCount() == product.getCount();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getIdProduct(), getCount());
     }
 }
