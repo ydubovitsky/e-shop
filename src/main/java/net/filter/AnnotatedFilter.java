@@ -14,8 +14,8 @@ public class AnnotatedFilter extends HttpFilter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) req;
-        request.setAttribute("CURRENT_URL", request.getRequestURI());
+        //HttpServletRequest request = (HttpServletRequest) req;
+        //request.setAttribute("CURRENT_URL", request.getRequestURI());
         chain.doFilter(req, res);
     }
 

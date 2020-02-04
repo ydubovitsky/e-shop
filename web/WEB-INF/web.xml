@@ -4,6 +4,22 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+    <!--Filters-->
+    <filter-mapping>
+        <filter-name>LogFilter</filter-name>
+        <url-pattern>/hello</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>AuthFilterName</filter-name>
+        <filter-class>net.filter.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilterName</filter-name>
+        <url-pattern>/index.jsp</url-pattern>
+    </filter-mapping>
+    <!--Filters-->
+
     <!--Servlets configurations -->
     <servlet>
         <servlet-name>IncludableServlet</servlet-name>
@@ -24,16 +40,6 @@
     </servlet-mapping>
     <!--Servlets configurations -->
 
-    <!--Filters-->
-    <filter>
-        <filter-name>XMLConfigFilter</filter-name>
-        <filter-class>net.filter.XMLConfigFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>XMLConfigFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <!--Filters-->
 
     <!--Settings-->
     <!--Поддержка сессии только с помощью cookie!-->
