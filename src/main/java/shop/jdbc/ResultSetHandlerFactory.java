@@ -37,18 +37,26 @@ public class ResultSetHandlerFactory {
         };
     }
 
+    /**
+     * Таким образом в метод передается интерфейс, в котором есть метод обработки ResultSet,
+     * а этот метод преобразует этот результат как какому то виду
+     * @param oneRowResultSetHandler - это интерфейс-надстройка над ResultSet
+     * @param <T>
+     * @return
+     */
     public final static <T> ResultSetHandler<List<T>> getListResultSetHandler(final ResultSetHandler<T> oneRowResultSetHandler) {
         return new ResultSetHandler<List<T>>() {
             @Override
+            //! ResultSet resultSet - вот это результат запроса из БД
             public List<T> handle(ResultSet resultSet) throws SQLException {
                 List<T> list = new ArrayList<>();
                 while (resultSet.next()) {
+                    //TODO Нужно как то разграничить для большей прозрачности
+                    //! ВНИМАНИЕ! Тут oneRowResultSetHandler.handle(resultSet) - это правило преобразования
                     list.add(oneRowResultSetHandler.handle(resultSet));
                 }
                 return list;
             }
         };
     }
-
-
 }

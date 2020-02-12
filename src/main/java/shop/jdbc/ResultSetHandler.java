@@ -9,6 +9,7 @@ import java.sql.SQLException;
  */
 public interface ResultSetHandler<T> {
 
+    //! Этот метод получает в качестве параметра ResultSet, обрабатывает его и приводит к виду(типу) T
     T handle(ResultSet resultSet) throws SQLException;
 
 }
