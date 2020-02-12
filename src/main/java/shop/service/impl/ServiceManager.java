@@ -1,18 +1,24 @@
 package shop.service.impl;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import shop.service.OrderService;
 import shop.service.ProductService;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class ServiceManager { //! Использует паттерн синглтон
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceManager.class);
     private final ProductService productService;
     private final OrderService orderService;
     private final Properties applicationProperties = new Properties();
+    private final BasicDataSource dataSource;
 
     /**
      * This constructor is called after public static ServiceManager getInstance
@@ -20,8 +26,23 @@ public class ServiceManager { //! Использует паттерн сингл
      */
     private ServiceManager(ServletContext context) {
         loadApplicationProperties(); //* Загружает свойства из файла
-        productService = new ProductServiceImpl();
+        dataSource = createDataSource(); //! Важно в каком порядке вызываются методы.
+        productService = new ProductServiceImpl(dataSource);
         orderService = new OrderServiceImpl();
+
+    }
+
+    private BasicDataSource createDataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDefaultAutoCommit(false); //?
+        dataSource.setRollbackOnReturn(true); //?
+        dataSource.setDriverClassName(applicationProperties.getProperty("db.driver"));
+        dataSource.setUrl(applicationProperties.getProperty("db.url"));
+        dataSource.setUsername(applicationProperties.getProperty("db.username"));
+        dataSource.setPassword(applicationProperties.getProperty("db.password"));
+        dataSource.setInitialSize(Integer.parseInt(applicationProperties.getProperty("db.pool.initSize")));
+        dataSource.setMaxTotal(Integer.parseInt(applicationProperties.getProperty("db.pool.maxSize")));
+        return dataSource;
     }
 
     /**
@@ -39,6 +60,11 @@ public class ServiceManager { //! Использует паттерн сингл
     }
 
     public void close() { //close resources
+        try {
+            dataSource.close();
+        } catch (SQLException e) {
+            LOGGER.error("Close dataSource failed: " + e.getMessage(), e);
+        }
     }
 
     /**
