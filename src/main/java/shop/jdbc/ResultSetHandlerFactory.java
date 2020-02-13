@@ -1,5 +1,7 @@
 package shop.jdbc;
 
+import shop.entity.Category;
+import shop.entity.Producer;
 import shop.entity.Product;
 
 import java.sql.ResultSet;
@@ -14,6 +16,7 @@ public class ResultSetHandlerFactory {
         @Override
         public Product handle(ResultSet resultSet) throws SQLException {
             Product product = new Product();
+            product.setId(resultSet.getInt("id"));
             product.setName(resultSet.getString("name"));
             product.setCategory(resultSet.getString("category"));
             product.setDescription(resultSet.getString("description"));
@@ -21,6 +24,29 @@ public class ResultSetHandlerFactory {
             product.setPrice(resultSet.getBigDecimal("price"));
             product.setProducer(resultSet.getString("producer"));
             return product;
+        }
+    };
+
+    public final static ResultSetHandler<Category> CATEGORY_RESULT_SET_HANDLER = new ResultSetHandler<Category>() {
+
+        public Category handle(ResultSet resultSet) throws SQLException {
+            Category category = new Category();
+            category.setId(resultSet.getInt("id"));
+            category.setName(resultSet.getString("name"));
+            category.setUrl(resultSet.getString("url"));
+            category.setProduct_count(resultSet.getInt("product_count"));
+            return category;
+        }
+    };
+
+    public final static ResultSetHandler<Producer> PRODUCER_RESULT_SET_HANDLER = new ResultSetHandler<Producer>() {
+        @Override
+        public Producer handle(ResultSet resultSet) throws SQLException {
+            Producer producer = new Producer();
+            producer.setId(resultSet.getInt("id"));
+            producer.setName(resultSet.getString("name"));
+            producer.setProductCount(resultSet.getInt("product_count"));
+            return producer;
         }
     };
 
@@ -44,6 +70,7 @@ public class ResultSetHandlerFactory {
      * @param <T>
      * @return
      */
+    //TODO Как работает этот метод?
     public final static <T> ResultSetHandler<List<T>> getListResultSetHandler(final ResultSetHandler<T> oneRowResultSetHandler) {
         return new ResultSetHandler<List<T>>() {
             @Override

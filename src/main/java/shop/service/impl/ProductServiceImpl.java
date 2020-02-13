@@ -1,6 +1,7 @@
 package shop.service.impl;
 
 import shop.entity.Category;
+import shop.entity.Producer;
 import shop.entity.Product;
 import shop.exception.InternalServerErrorException;
 import shop.jdbc.JDBCUtils;
@@ -19,6 +20,12 @@ class ProductServiceImpl implements ProductService {
     //* Там как бы обработчик плучает другой обработчик, который обрабатывает 1 строку ответа и формируется лист, но разберись еще
     private static final ResultSetHandler<List<Product>> productsResultSetHandler =
             ResultSetHandlerFactory.getListResultSetHandler(ResultSetHandlerFactory.PRODUCT_RESULT_SET_HANDLER);
+
+    private static final ResultSetHandler<List<Category>> categoryResultSetHandler =
+            ResultSetHandlerFactory.getListResultSetHandler(ResultSetHandlerFactory.CATEGORY_RESULT_SET_HANDLER);
+
+    private static final ResultSetHandler<List<Producer>> producerResultSetHandler =
+            ResultSetHandlerFactory.getListResultSetHandler(ResultSetHandlerFactory.PRODUCER_RESULT_SET_HANDLER);
 
     private final DataSource dataSource;
 
@@ -46,8 +53,28 @@ class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> listProductByCategory(String categoryUrl, int page, int limit) {
         try(Connection c = dataSource.getConnection()) {
-            int offset = (page - 1) * limit; //? ЗАчем тут page и limit?
-            return JDBCUtils.select(c, "select p.*, c.name as category, pr.name as producer from product p, producer pr, category c where c.id=p.id_category and pr.id=p.id_producer and c.url=? limit ?", productsResultSetHandler, categoryUrl, limit, offset);
+            int offset = (page - 1) * limit;
+            return JDBCUtils.select(c,
+                    "select p.*, c.name as category, pr.name as producer from product p, category c, producer pr where c.url=? and pr.id=p.id_producer and c.id=p.id_category order by p.id limit ? offset ?",
+                    productsResultSetHandler, categoryUrl, limit, offset);
+        } catch (SQLException s) {
+            throw new InternalServerErrorException("Cant execute sql query: " + s.getMessage(), s);
+        }
+    }
+
+    @Override
+    public List<Category> listAllCategory() {
+        try(Connection c = dataSource.getConnection()) {
+            return JDBCUtils.select(c, "select * from category order by id", categoryResultSetHandler);
+        } catch (SQLException s) {
+            throw new InternalServerErrorException("Cant execute sql query: " + s.getMessage(), s);
+        }
+    }
+
+    @Override
+    public List<Producer> listAllProducer() {
+        try(Connection c = dataSource.getConnection()) {
+            return JDBCUtils.select(c, "select * from producer order by id", producerResultSetHandler);
         } catch (SQLException s) {
             throw new InternalServerErrorException("Cant execute sql query: " + s.getMessage(), s);
         }

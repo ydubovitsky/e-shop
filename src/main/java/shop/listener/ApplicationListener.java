@@ -2,6 +2,7 @@ package shop.listener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import shop.constants.Constants;
 import shop.service.impl.ServiceManager;
 
 import javax.servlet.ServletContextEvent;
@@ -13,10 +14,14 @@ public class ApplicationListener implements ServletContextListener {
 
     private ServiceManager serviceManager;
 
+
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         try {
             serviceManager = ServiceManager.getInstance(sce.getServletContext());
+            sce.getServletContext().setAttribute(Constants.CATEGORY_LIST, serviceManager.getProductService().listAllCategory());
+            sce.getServletContext().setAttribute(Constants.PRODUCER_LIST, serviceManager.getProductService().listAllProducer());
         } catch (Exception e) {
             LOGGER.error("Web-application init failed " + e.getMessage(), e);
             throw e;
