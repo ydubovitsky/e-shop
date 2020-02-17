@@ -27,9 +27,11 @@
 			show:true
 		});
 	};
+
 	var initBuyBtn = function(){
 		$('.buy-btn').click(showAddProductPopup);
 	};
+
 	var addProductToCart = function (){
 		var idProduct = $('#addProductPopup').attr('data-id-product');
 		var count = $('#addProductPopup .count').val();
@@ -46,6 +48,7 @@
 			$('#addProductPopup').modal('hide');
 		}, 800);
 	};
+
 	var calculateCost = function(){
 		var priceStr = $('#addProductPopup .price').text();
 		var price = parseFloat(priceStr.replace('$',' '));
@@ -60,18 +63,33 @@
 			$('#addProductPopup .cost').text(priceStr);
 		}
 	};
+
+	/**
+	 * 		var pathname = window.location.pathname; // Returns path only (/path/example.html)
+	 // 	var url      = window.location.href;     // Returns full URL (https://example.com/path/example.html)
+	 // 	var origin   = window.location.origin;   // Returns base URL (https://example.com)
+
+	 // 	https://www.w3schools.com/jsref/prop_loc_search.asp
+	 */
 	var loadMoreProducts = function (){
+		console.log(location.pathname);
+		console.log(location.search);
 		$('#loadMore').addClass('hidden');
 		$('#loadMoreIndicator').removeClass('hidden');
+		var url = '/ajax/html/more' + location.pathname + '?' + location.search.substring(1);
 		$.ajax({
-			url : '/ajax/html/more/products',
+			url : url,
 			success : function(html) {
 				$('#productList .text-center').prepend(html);
 				$('#loadMoreIndicator').addClass('hidden');
 				$('#loadMore').removeClass('hidden');
+			},
+			error : function(data) {
+				alert('Error');
 			}
 		});
 	};
+
 	var initSearchForm = function (){
 		$('#allCategories').click(function(){
 			$('.categories .search-option').prop('checked', $(this).is(':checked'));
@@ -86,6 +104,7 @@
 			$('#allProducers').prop('checked', false);
 		});
 	};
+
 	var goSearch = function(){
 		var isAllSelected = function(selector) {
 			var unchecked = 0;
@@ -104,17 +123,20 @@
 		}
 		$('form.search').submit();
 	};
+
 	var confirm = function (msg, okFunction) {
 		if(window.confirm(msg)) {
 			okFunction();
 		}
 	};
+
 	var removeProductFromCart = function (){
 		var btn = $(this);
 		confirm('Are you sure?', function(){
 			executeRemoveProduct(btn);
 		});
 	};
+
 	var refreshTotalCost = function () {
 		var total = 0;
 		$('#shoppingCart .item').each(function(index, value) {
@@ -125,6 +147,7 @@
 		});
 		$('#shoppingCart .total').text('$'+total);
 	};
+
 	var executeRemoveProduct = function (btn) {
 		var idProduct = btn.attr('data-id-product');
 		var count = btn.attr('data-count');
