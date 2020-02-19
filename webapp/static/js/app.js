@@ -85,7 +85,7 @@
 				$('#loadMore').removeClass('hidden');
 			},
 			error : function(data) {
-				alert('Error');
+				alert('Error' + data);
 			}
 		});
 	};

@@ -9,7 +9,7 @@
 				<span class="icon-bar"></span> 
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/products">IShop</a>
+			<a class="navbar-brand" href="/products">Amazing Rubber E-Shop</a>
 		</div>
 		<div class="collapse navbar-collapse" id="ishopNav">
 			<ul id="currentShoppingCart" class="nav navbar-nav navbar-right hidden">
