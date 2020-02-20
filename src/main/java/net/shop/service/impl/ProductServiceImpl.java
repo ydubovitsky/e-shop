@@ -16,7 +16,6 @@ import java.util.List;
 
 class ProductServiceImpl implements ProductService {
 
-
     private static final ResultSetHandler<List<Product>> productsResultSetHandler = ResultSetFactory.getListResultSetHandler(ResultSetFactory.PRODUCT_RESULT_SET_HANDLER);
     private static final ResultSetHandler<List<Category>> categoryResultSetHandler = ResultSetFactory.getListResultSetHandler(
             ResultSetFactory.CATEGORY_RESULT_SET_HANDLER
@@ -24,9 +23,19 @@ class ProductServiceImpl implements ProductService {
     private static final ResultSetHandler<List<Producer>> producersResultSetHandler = ResultSetFactory.getListResultSetHandler(
             ResultSetFactory.PRODUCER_RESULT_SET_HANDLER
     );
+    private static final ResultSetHandler<Integer> productCountResultSetHandler = ResultSetFactory.getSingleResultHandler(
+            ResultSetFactory.COUNT_PRODUCT_RESULT_SET_HANDLER
+    );
 
+    /**
+     * A factory for connections to the physical data source that this DataSource object represents.
+     */
     private DataSource dataSource;
 
+    /**
+     * Constructor
+     * @param dataSource
+     */
     public ProductServiceImpl(DataSource dataSource) {
         super();
         this.dataSource = dataSource;
@@ -91,6 +100,28 @@ class ProductServiceImpl implements ProductService {
             String sql = "select p.* from producer p";
             List<Producer> producers = JDBCUtils.select(c, sql, producersResultSetHandler);
             return producers;
+        } catch (SQLException e) {
+            throw new InternalServerErrorException("Cant execute sql query " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public int countAllProducts() {
+        try(Connection c = dataSource.getConnection()) {
+            String sql = "select count(*) from product";
+            int count = JDBCUtils.select(c, sql, productCountResultSetHandler);
+            return count;
+        } catch (SQLException e) {
+            throw new InternalServerErrorException("Cant execute sql query " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public int countProductsByCategories(String categoryUrl) {
+        try(Connection c = dataSource.getConnection()) {
+            String sql = "select count(*) from product p, category c where p.id_category=c.id and c.url=?";
+            int count = JDBCUtils.select(c, sql, productCountResultSetHandler, categoryUrl);
+            return count;
         } catch (SQLException e) {
             throw new InternalServerErrorException("Cant execute sql query " + e.getMessage(), e);
         }

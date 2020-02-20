@@ -22,6 +22,8 @@ public class AllProductsController extends AbstractController {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<Product> products = getProductService().listAllProducts(1, MAX_PRODUCTS_PER_HTML_PAGE);
 		req.setAttribute("products", products); //* Полученный список передаем на уровень представления
+		int totalCount = getProductService().countAllProducts();
+		req.setAttribute("pageCount", this.pageCount(totalCount, MAX_PRODUCTS_PER_HTML_PAGE)); //* Передаем количество страниц с продуктами
 		RoutingUtils.forwardToPage("products.jsp", req, resp);
 	}
 }

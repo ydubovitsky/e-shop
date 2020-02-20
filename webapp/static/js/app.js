@@ -1,3 +1,4 @@
+// Обновить скрипты в Браузере хром -> Ctrl + F5
 ;$(function(){
 	var init = function (){
 		initBuyBtn();
@@ -76,11 +77,20 @@
 		console.log(location.search);
 		$('#loadMore').addClass('hidden');
 		$('#loadMoreIndicator').removeClass('hidden');
-		var url = '/ajax/html/more' + location.pathname + '?' + location.search.substring(1);
+		var pageCount = parseInt($('#productList').attr("data-page-count"));
+		var pageNumber = parseInt($('#productList').attr("data-page-number"));
+		// (pageNumber + 1) - отправляет на сервер запрос текущая страница + 1
+		var url = '/ajax/html/more' + location.pathname + '?page=' + (pageNumber + 1) + "&" + location.search.substring(1);
 		$.ajax({
 			url : url,
 			success : function(html) {
-				$('#productList .text-center').prepend(html);
+				$('#productList .row').append(html);
+				pageNumber++; // Увеличиваем page number
+				if (pageNumber < pageCount) { // Если есть еще страницы для отображения
+					$('#productList').attr("data-page-number", pageNumber);
+				} else { // В противном случае удаляем кнопку
+					$('#loadMore').remove();
+				}
 				$('#loadMoreIndicator').addClass('hidden');
 				$('#loadMore').removeClass('hidden');
 			},

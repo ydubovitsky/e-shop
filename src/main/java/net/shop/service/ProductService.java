@@ -29,4 +29,17 @@ public interface ProductService {
      * @return
      */
     List<Producer> listAllProducers();
+
+    /**
+     * Возвращает количество всех продуктов из БД
+     * @return
+     */
+    int countAllProducts();
+
+    /**
+     * Возвращает количество продуктов КОНКРЕТНОЙ категории
+     * @param category
+     * @return
+     */
+    int countProductsByCategories(String category);
 }
