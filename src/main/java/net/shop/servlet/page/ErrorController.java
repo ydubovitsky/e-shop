@@ -10,11 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.shop.servlet.AbstractController;
 import net.shop.util.RoutingUtils;
 
-/**
- * 
- * @author devstudy
- * @see http://devstudy.net
- */
 @WebServlet("/error")
 public class ErrorController extends AbstractController {
 	private static final long serialVersionUID = -4385792519039493271L;

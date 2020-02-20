@@ -15,7 +15,7 @@ import net.shop.util.RoutingUtils;
 import static net.shop.Constants.MAX_PRODUCTS_PER_HTML_PAGE;
 
 /**
- *
+ * Servlet for ajax request
  */
 @WebServlet("/ajax/html/more/products")
 public class AllProductsMoreController extends AbstractController {

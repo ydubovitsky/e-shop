@@ -1,5 +1,7 @@
 package net.shop.jdbc;
 
+import net.shop.entity.impl.Category;
+import net.shop.entity.impl.Producer;
 import net.shop.entity.impl.Product;
 
 import java.sql.ResultSet;
@@ -25,6 +27,29 @@ public class ResultSetFactory {
             product.setPrice(rs.getBigDecimal("price"));
             product.setProducer(rs.getString("producer"));
             return product;
+        }
+    };
+
+    public final static ResultSetHandler<Category> CATEGORY_RESULT_SET_HANDLER = new ResultSetHandler<Category>() {
+        @Override
+        public Category handler(ResultSet rs) throws SQLException {
+            Category category = new Category();
+            category.setId(rs.getInt("id"));
+            category.setName(rs.getString("name"));
+            category.setUrl(rs.getString("url"));
+            category.setProductCount(rs.getInt("product_count"));
+            return category;
+        }
+    };
+
+    public final static ResultSetHandler<Producer> PRODUCER_RESULT_SET_HANDLER = new ResultSetHandler<Producer>() {
+        @Override
+        public Producer handler(ResultSet rs) throws SQLException {
+            Producer producer = new Producer();
+            producer.setId(rs.getInt("id"));
+            producer.setCount(rs.getInt("product_count"));
+            producer.setName(rs.getString("name"));
+            return producer;
         }
     };
 

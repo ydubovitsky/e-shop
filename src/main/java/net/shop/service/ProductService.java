@@ -1,5 +1,7 @@
 package net.shop.service;
 
+import net.shop.entity.impl.Category;
+import net.shop.entity.impl.Producer;
 import net.shop.entity.impl.Product;
 
 import java.util.List;
@@ -13,4 +15,18 @@ public interface ProductService {
      * @return
      */
     List<Product> listAllProducts(int page, int limit);
+
+    List<Product> listProductsByCategory(String categoryUrl, int page, int limit);
+
+    /**
+     * Возвращает список всех категорий
+     * @return
+     */
+    List<Category> listAllCategories();
+
+    /**
+     * Возвращает список всех категорий из БД
+     * @return
+     */
+    List<Producer> listAllProducers();
 }
