@@ -4,6 +4,7 @@ import net.shop.entity.impl.Category;
 import net.shop.entity.impl.Producer;
 import net.shop.entity.impl.Product;
 import net.shop.exception.InternalServerErrorException;
+import net.shop.form.SearchForm;
 import net.shop.jdbc.JDBCUtils;
 import net.shop.jdbc.ResultSetFactory;
 import net.shop.jdbc.ResultSetHandler;
@@ -97,7 +98,7 @@ class ProductServiceImpl implements ProductService {
 
     public List<Producer> listAllProducers() {
         try(Connection c = dataSource.getConnection()) {
-            String sql = "select p.* from producer p";
+            String sql = "select p.* from producer p order by p.name";
             List<Producer> producers = JDBCUtils.select(c, sql, producersResultSetHandler);
             return producers;
         } catch (SQLException e) {
@@ -122,6 +123,33 @@ class ProductServiceImpl implements ProductService {
             String sql = "select count(*) from product p, category c where p.id_category=c.id and c.url=?";
             int count = JDBCUtils.select(c, sql, productCountResultSetHandler, categoryUrl);
             return count;
+        } catch (SQLException e) {
+            throw new InternalServerErrorException("Cant execute sql query " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Поиск по запросу из поисковой строки
+     */
+    @Override
+    public List<Product> listProductsBySearchForm(SearchForm searchForm, int page, int limit) {
+        try(Connection c = dataSource.getConnection()) {
+            int offset = (page - 1) * limit;
+            String sql = "select p.*, c.name as category, pr.name as producer from product p, producer pr, category c where c.id=p.id_category and pr.id=p.id_producer and (p.name ilike ? or p.description ilike ?) limit ? offset ?";
+            //! searchForm.getQuery() - это то, что ввел пользователь в поисковой строке
+            //! % - это sql синтаксис, любая строка любой длины (включая нулевую длину)
+            return JDBCUtils.select(c, sql, productsResultSetHandler, "%"+searchForm.getQuery()+"%", "%"+searchForm.getQuery()+"%", limit, offset);
+        } catch (SQLException e) {
+            throw new InternalServerErrorException("Cant execute sql query " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public int countProductsBySearchForm(SearchForm searchForm) {
+        try(Connection c = dataSource.getConnection()) {
+            String sql = "select count(*) from product p, category c, producer pr " +
+                    " where (p.name ilike ? or p.description ilike ?) and c.id=p.id_category and pr.id=p.id_producer";
+            return JDBCUtils.select(c, sql, productCountResultSetHandler, "%"+searchForm.getQuery()+"%", "%"+searchForm.getQuery()+"%");
         } catch (SQLException e) {
             throw new InternalServerErrorException("Cant execute sql query " + e.getMessage(), e);
         }

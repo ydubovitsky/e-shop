@@ -12,7 +12,7 @@
 		<div class="panel-heading">Find products</div>
 		<div class="panel-body">
 			<div class="input-group">
-				<input type="text" name="query" class="form-control" placeholder="Search query"> 
+				<input type="text" name="query" class="form-control" placeholder="Search query" value="${searchForm.query}">
 				<span class="input-group-btn"> 
 					<a id="goSearch" class="btn btn-default">Go!</a>
 				</span>

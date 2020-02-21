@@ -4,6 +4,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
+import net.shop.form.SearchForm;
 import net.shop.service.OrderService;
 import net.shop.service.ProductService;
 import net.shop.service.impl.ServiceManager;
@@ -55,5 +56,13 @@ public abstract class AbstractController extends HttpServlet {
 		} catch (NumberFormatException e) {
 			return 1;
 		}
+	}
+
+	public final SearchForm createSearchForm(HttpServletRequest req) {
+		SearchForm searchForm = new SearchForm(
+				req.getParameter("query"),
+				req.getParameterValues("category"),
+				req.getParameterValues("producer"));
+		return searchForm;
 	}
 }

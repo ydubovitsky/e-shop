@@ -3,6 +3,7 @@ package net.shop.service;
 import net.shop.entity.impl.Category;
 import net.shop.entity.impl.Producer;
 import net.shop.entity.impl.Product;
+import net.shop.form.SearchForm;
 
 import java.util.List;
 
@@ -42,4 +43,14 @@ public interface ProductService {
      * @return
      */
     int countProductsByCategories(String category);
+
+    /**
+     * Получаем список продуктов удовлетворяющих запросу из формы для поиска
+     */
+    List<Product> listProductsBySearchForm(SearchForm searchForm, int page, int limit);
+
+    /**
+     * Получает количество продуктов, удовлетворяющих поисковому запросу.
+     */
+    int countProductsBySearchForm(SearchForm searchForm);
 }

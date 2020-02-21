@@ -22,6 +22,8 @@ public class ProductsByCategoryController extends AbstractController {
         String categoryUrl = req.getRequestURI().substring(SUBSTRING_INDEX); //* возвращает строку начинающуюся с индекса SUBSTRING_INDEX
         List<Product> products = getProductService().listProductsByCategory(categoryUrl, 1, MAX_PRODUCTS_PER_HTML_PAGE);
         req.setAttribute("products", products);
+        int totalCount = getProductService().countProductsByCategories(categoryUrl); //* Количество продуктов данной категории
+        req.setAttribute("pageCount", pageCount(totalCount, MAX_PRODUCTS_PER_HTML_PAGE));
         req.setAttribute("selectedCategoryUrl", categoryUrl); //*  Для того чтобы сделать меню активным
         RoutingUtils.forwardToPage("products.jsp", req, resp);
     }
