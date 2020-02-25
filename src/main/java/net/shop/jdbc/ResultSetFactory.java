@@ -61,6 +61,19 @@ public class ResultSetFactory {
         }
     };
 
+    public final static ResultSetHandler<Integer> getCountResultSetHandler() {
+        return new ResultSetHandler<Integer>() {
+            @Override
+            public Integer handler(ResultSet rs) throws SQLException {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                } else {
+                    return 0;
+                }
+            }
+        };
+    }
+
     /**
      * Эти методы возвращают анонимные классы, реализующие интерфейсы interface ResultSetHandler<T>.
      * В качестве параметра передается объект класса ResultSetHandler<Product> PRODUCT_RESULT_SET_HANDLER,

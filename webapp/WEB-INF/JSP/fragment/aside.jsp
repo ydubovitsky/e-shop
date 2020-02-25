@@ -21,9 +21,10 @@
 				<a data-toggle="collapse" href="#searchOptions">More filters <span class="caret"></span></a>
 			</div>
 		</div>
-		<div id="searchOptions" class="collapse">
-            <tags:category-filter CATEGORY_LIST="${CATEGORY_LIST}"/>
-            <tags:products-filter PRODUCERS_LIST="${PRODUCERS_LIST}"/>
+		<div id="searchOptions" class="collapse ${searchForm.categoriesEmpty and searchForm.producersEmpty ? "" : "in"}" >
+			<%--Тут нужно указать параметры которые мы передаем в тэг--%>
+            <tags:category-filter CATEGORY_LIST="${CATEGORY_LIST}" searchForm="${searchForm}"/>
+            <tags:products-filter PRODUCERS_LIST="${PRODUCERS_LIST}" searchForm="${searchForm}"/>
 		</div>
 	</div>
 </form>

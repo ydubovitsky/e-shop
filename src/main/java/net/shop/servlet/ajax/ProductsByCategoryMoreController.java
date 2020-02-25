@@ -16,7 +16,7 @@ import static net.shop.Constants.MAX_PRODUCTS_PER_HTML_PAGE;
 @WebServlet("/ajax/html/more/products/*")
 public class ProductsByCategoryMoreController extends AbstractController {
 
-    private static final int SUBSTRING_INDEX = "/ajax/html/product/".length();
+    private static final int SUBSTRING_INDEX = "/ajax/html/more/products/*".length();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

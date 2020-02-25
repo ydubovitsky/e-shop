@@ -45,7 +45,7 @@ public abstract class AbstractController extends HttpServlet {
 	}
 
 	/**
-	 * Возвращает номер страницы из строки запроса
+	 * Возвращает номер страницы из строки запроса (Считывает параметры из HttpServletRequest)
 	 * @param request
 	 * @return
 	 */
@@ -58,10 +58,13 @@ public abstract class AbstractController extends HttpServlet {
 		}
 	}
 
+    /**
+     * Этот метод создает объект SearchForm из HttpServletRequest
+     */
 	public final SearchForm createSearchForm(HttpServletRequest req) {
 		SearchForm searchForm = new SearchForm(
 				req.getParameter("query"),
-				req.getParameterValues("category"),
+				req.getParameterValues("category"), //* возвращает массив значений категорий {1,2,3 и т.п.}
 				req.getParameterValues("producer"));
 		return searchForm;
 	}

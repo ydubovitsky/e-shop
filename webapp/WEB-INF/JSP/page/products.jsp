@@ -16,4 +16,4 @@
 	</div>
 	</c:if>
 </div>
-<ishop:add-product-popup />    
+<ishop:add-product-popup />

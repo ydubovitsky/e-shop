@@ -13,6 +13,9 @@ import java.util.List;
 
 import static net.shop.Constants.MAX_PRODUCTS_PER_HTML_PAGE;
 
+/**
+ * Этот сервлет обрабатывает запросы ???
+ */
 @WebServlet("/products/*")
 public class ProductsByCategoryController extends AbstractController {
     private static final int SUBSTRING_INDEX = "/products".length();

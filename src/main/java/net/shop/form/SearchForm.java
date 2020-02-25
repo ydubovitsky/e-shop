@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Класс представляющий собой строку поискового запроса
+ * Класс представляющий собой строку поискового запроса из формы поиска
  */
 public class SearchForm {
 
@@ -13,16 +13,19 @@ public class SearchForm {
     private List<Integer> producers; //* Список выбранных производителей
     private List<Integer> categories; //* Список выбранных категорий
 
-    public SearchForm(String query, String[] producers, String[] categories) {
+    public SearchForm(String query, String[] producers, String[] categories) { //? Почему массив? Потому что req.getParameterValues() - возвращает массив, а не список.
         this.query = query;
         this.producers = arrayToList(producers);
         this.categories = arrayToList(categories);
     }
 
+    /**
+     * Преобразует массив в список
+     */
     private List<Integer> arrayToList(String[] array) {
         if (array != null) {
             return List.of(array).stream().map(Integer::parseInt).collect(Collectors.toList());
-        } return Collections.EMPTY_LIST;
+        } return Collections.emptyList();
     }
 
     public String getQuery() {
@@ -47,5 +50,13 @@ public class SearchForm {
 
     public void setCategories(List<Integer> categories) {
         this.categories = categories;
+    }
+
+    public boolean isCategoriesEmpty() {
+        return categories.isEmpty();
+    }
+
+    public boolean isProducersEmpty() {
+        return producers.isEmpty();
     }
 }

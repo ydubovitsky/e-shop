@@ -17,8 +17,6 @@ import static net.shop.Constants.MAX_PRODUCTS_PER_HTML_PAGE;
 @WebServlet("/ajax/html/more/search")
 public class SearchResultMoreController extends AbstractController {
 
-    private static final int SUBSTRING_INDEX = "/ajax/html/more/search".length();
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         SearchForm searchForm = createSearchForm(req);

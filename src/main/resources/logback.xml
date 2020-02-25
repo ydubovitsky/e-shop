@@ -8,6 +8,8 @@
 		</encoder>
 	</appender>
 
+	<logger name="net.shop.service.impl.ProductServiceImpl" level="debug"/>
+
 	<root level="info">
 		<appender-ref ref="STDOUT" />
 	</root>
