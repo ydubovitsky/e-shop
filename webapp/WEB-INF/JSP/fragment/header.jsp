@@ -18,7 +18,7 @@
 						<i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping cart (<span id="total-count-header" class="total-count">0</span>)<span class="caret"></span>
 					</a>
 					<div class="dropdown-menu shopping-cart-desc">
-						Total count: <span class="total-count">0</span><br>
+						Total count: <span id="dropdown-menu-total-count" class="total-count">0</span><br>
 						Total cost: <span class="total-cost">0</span><br>
 						<a href="/shopping-cart" class="btn btn-primary btn-block">View cart</a>
 					</div>

@@ -38,7 +38,7 @@
 	 */
 	var addProductToCart = function (){
 		var idProduct = $('#addProductPopup').attr('data-id-product');
-		var currentTotalCount = parseInt($('#currentShoppingCart .total-count').text()); // текущее количество из корзины
+		var currentTotalCount = $('#currentShoppingCart .total-count').text(); // текущее количество из корзины
 		var currentTotalCost = parseInt($('#currentShoppingCart .total-cost').text()); // текущая цена из корзины
 		var popUpCount = parseInt($('#addProductPopup .count').val()); // считаное значение из popUp
 		var popUpCost = parseInt(($('#addProductPopup .cost').text()).match(/\d+/)); // считаное значение из popUp
@@ -51,7 +51,9 @@
 				count: popUpCount
 			},
 			success : function(data) {
-				$('#currentShoppingCart .total-count').text(currentTotalCount + data.totalCount);
+				var sum = parseInt(data.totalCount,10) + parseInt(currentTotalCount, 10);
+				$('#currentShoppingCart .total-count').text("");
+				$('#total-count-header').text(sum); //! Эта чертова хрень не работаеТ!!!!
 				$('#currentShoppingCart .total-cost').text(currentTotalCost + data.totalCost);
 				$('#currentShoppingCart').removeClass('hidden');
 				$('#addProductPopup').modal('hide');
