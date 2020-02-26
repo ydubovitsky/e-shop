@@ -51,6 +51,12 @@
 			<artifactId>commons-dbcp2</artifactId>
 			<version>2.7.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20190722</version>
+		</dependency>
 
 	</dependencies>
 	<build>
@@ -79,7 +85,7 @@
 						<phase>clean</phase>
 						<configuration>
 							<tasks>
-								<delete dir="${basedir}/src/main/webapp/WEB-INF/lib" />
+								<delete dir="${basedir}/webapp/WEB-INF/lib" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -92,8 +98,8 @@
 						<phase>install</phase>
 						<configuration>
 							<tasks>
-								<delete dir="${basedir}/src/main/webapp/WEB-INF/lib" />
-								<copy todir="${basedir}/src/main/webapp/WEB-INF/lib">
+								<delete dir="${basedir}/webapp/WEB-INF/lib" />
+								<copy todir="${basedir}/webapp/WEB-INF/lib">
 									<fileset dir="${basedir}/target/${project.build.finalName}/WEB-INF/lib" />
 								</copy>
 							</tasks>

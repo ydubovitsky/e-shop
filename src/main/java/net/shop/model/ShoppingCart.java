@@ -1,31 +1,37 @@
 package net.shop.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import net.shop.Constants;
+import net.shop.entity.impl.Product;
 import net.shop.exception.ValidationException;
 
-/**
- * 
- * @author devstudy
- * @see http://devstudy.net
- */
 public class ShoppingCart implements Serializable {
-	private static final long serialVersionUID = 1535770438453611801L;
+
+	/**
+	 * Данное поле содержит id добавленного продукта и ссылку на shoppingCartItem
+	 */
 	private Map<Integer, ShoppingCartItem> products = new HashMap<>();
 	private int totalCount = 0;
+	private BigDecimal totalCost = BigDecimal.ZERO;
 
-	public void addProduct(int idProduct, int count) {
-		validateShoppingCartSize(idProduct);
-		ShoppingCartItem shoppingCartItem = products.get(idProduct);
-		if (shoppingCartItem == null) {
+	/**
+	 * Метод добавляет продукт в корзину.
+	 * @param product - продукт
+	 * @param count - количество
+	 */
+	public void addProduct(Product product, int count) {
+		validateShoppingCartSize(product.getId());
+		ShoppingCartItem shoppingCartItem = products.get(product.getId()); //! если в products уже есть продукт с данным id
+		if (shoppingCartItem == null) { //* если нет
 			validateProductCount(count);
-			shoppingCartItem = new ShoppingCartItem(idProduct, count);
-			products.put(idProduct, shoppingCartItem);
-		} else {
+			shoppingCartItem = new ShoppingCartItem(product, count);
+			products.put(product.getId(), shoppingCartItem);
+		} else { //! если есть, изменяем количество
 			validateProductCount(count + shoppingCartItem.getCount());
 			shoppingCartItem.setCount(shoppingCartItem.getCount() + count);
 		}
@@ -51,24 +57,38 @@ public class ShoppingCart implements Serializable {
 	public int getTotalCount() {
 		return totalCount;
 	}
-	
+
+	public BigDecimal getTotalCost() {
+		return totalCost;
+	}
+
 	private void validateProductCount(int count) {
 		if(count > Constants.MAX_PRODUCT_COUNT_PER_SHOPPING_CART){
 			throw new ValidationException("Limit for product count reached: count="+count);
 		}
 	}
-	
+
 	private void validateShoppingCartSize(int idProduct){
-		if(products.size() > Constants.MAX_PRODUCTS_PER_SHOPPING_CART || 
+		if(products.size() > Constants.MAX_PRODUCTS_PER_SHOPPING_CART ||
 				(products.size() == Constants.MAX_PRODUCTS_PER_SHOPPING_CART && !products.containsKey(idProduct))) {
 			throw new ValidationException("Limit for ShoppingCart size reached: size="+products.size());
 		}
 	}
 
+	/**
+	 * Метод обновляет состояние корзины, сумарную цену и количество товаров
+	 */
 	private void refreshStatistics() {
-		totalCount = 0;
+		totalCount = 0; //? Зачем? когда в переменной класса уже объявлено
+		totalCost = BigDecimal.ZERO;
 		for (ShoppingCartItem shoppingCartItem : getItems()) {
 			totalCount += shoppingCartItem.getCount();
+			totalCost = totalCost.add(
+					shoppingCartItem.getProduct().getPrice()
+							.multiply(
+								BigDecimal.valueOf(shoppingCartItem.getCount())
+							)
+			);
 		}
 	}
 

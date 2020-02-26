@@ -4,6 +4,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
+import net.shop.form.ProductForm;
 import net.shop.form.SearchForm;
 import net.shop.service.OrderService;
 import net.shop.service.ProductService;
@@ -67,5 +68,16 @@ public abstract class AbstractController extends HttpServlet {
 				req.getParameterValues("category"), //* возвращает массив значений категорий {1,2,3 и т.п.}
 				req.getParameterValues("producer"));
 		return searchForm;
+	}
+
+	/**
+	 * Этот метод создает объект ProductForm из HttpServletRequest
+	 */
+	public final ProductForm createProductForm(HttpServletRequest req) {
+		ProductForm productForm = new ProductForm(
+				Integer.parseInt(req.getParameter("idProduct")),
+				Integer.parseInt(req.getParameter("count"))
+		);
+		return productForm;
 	}
 }

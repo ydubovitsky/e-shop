@@ -8,11 +8,16 @@ import net.shop.Constants;
 import net.shop.model.ShoppingCart;
 
 /**
- * 
- * @author devstudy
- * @see http://devstudy.net
+ * Утилитный класс для работы с сессиями
  */
 public class SessionUtils {
+
+	/**
+	 * Этот метод возвращает объект ShoppingCart из сессии. Если объекта ShoppingCart нет в сессии, то он создается и
+	 * записывается в сессию.
+	 * @param req
+	 * @return
+	 */
 	public static ShoppingCart getCurrentShoppingCart(HttpServletRequest req) {
 		ShoppingCart shoppingCart = (ShoppingCart) req.getSession().getAttribute(Constants.CURRENT_SHOPPING_CART);
 		if (shoppingCart == null) {
@@ -26,6 +31,11 @@ public class SessionUtils {
 		return req.getSession().getAttribute(Constants.CURRENT_SHOPPING_CART) != null;
 	}
 
+	/**
+	 * Записывает объект shoppingCart в сессию.
+	 * @param req
+	 * @param shoppingCart
+	 */
 	public static void setCurrentShoppingCart(HttpServletRequest req, ShoppingCart shoppingCart) {
 		req.getSession().setAttribute(Constants.CURRENT_SHOPPING_CART, shoppingCart);
 	}

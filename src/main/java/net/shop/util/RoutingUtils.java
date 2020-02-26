@@ -1,5 +1,7 @@
 package net.shop.util;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -7,9 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 
- * @author devstudy
- * @see http://devstudy.net
+ * Специальный утилитный класс, для передачи данных
  */
 public final class RoutingUtils {
 	
@@ -20,6 +20,12 @@ public final class RoutingUtils {
 	public static void forwardToPage(String jspPage, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setAttribute("currentPage", "page/" + jspPage);
 		req.getRequestDispatcher("/WEB-INF/JSP/page-template.jsp").forward(req, resp);
+	}
+
+	public static void sendJson(JSONObject jsonObject, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setContentType("application/json"); //? Заголовок?
+		resp.getWriter().println(jsonObject.toString());
+		resp.getWriter().close(); //? Все время ли нужно закрывать?
 	}
 
 	public static void sendHTMLFragment(String text, HttpServletRequest req, HttpServletResponse resp) throws IOException {

@@ -2,8 +2,8 @@
 ;$(function(){
 	var init = function (){
 		initBuyBtn();
-		$('#addToCart').click(addProductToCart);
 		$('#addProductPopup .count').change(calculateCost);
+		$('#addToCart').click(addProductToCart);
 		$('#loadMore').click(loadMoreProducts);
 		initSearchForm();
 		$('#goSearch').click(goSearch);
@@ -33,21 +33,33 @@
 		$('.buy-btn').click(showAddProductPopup);
 	};
 
+	/**
+	 * Функция добавления продуктов в корзину
+	 */
 	var addProductToCart = function (){
 		var idProduct = $('#addProductPopup').attr('data-id-product');
-		var count = $('#addProductPopup .count').val();
-		$('#addToCart').addClass('hidden');
-		$('#addToCartIndicator').removeClass('hidden');
-		setTimeout(function(){
-			var data = {
-				totalCount : count,
-				totalCost : 2000
-			};
-			$('#currentShoppingCart .total-count').text(data.totalCount);
-			$('#currentShoppingCart .total-cost').text(data.totalCost);
-			$('#currentShoppingCart').removeClass('hidden');
-			$('#addProductPopup').modal('hide');
-		}, 800);
+		var currentTotalCount = parseInt($('#currentShoppingCart .total-count').text()); // текущее количество из корзины
+		var currentTotalCost = parseInt($('#currentShoppingCart .total-cost').text()); // текущая цена из корзины
+		var popUpCount = parseInt($('#addProductPopup .count').val()); // считаное значение из popUp
+		var popUpCost = parseInt(($('#addProductPopup .cost').text()).match(/\d+/)); // считаное значение из popUp
+		var url = '/ajax/json/product/add';
+		$.ajax({
+			url : url,
+			method : 'POST',
+			data : {
+				idProduct: idProduct,
+				count: popUpCount
+			},
+			success : function(data) {
+				$('#currentShoppingCart .total-count').text(currentTotalCount + data.totalCount);
+				$('#currentShoppingCart .total-cost').text(currentTotalCost + data.totalCost);
+				$('#currentShoppingCart').removeClass('hidden');
+				$('#addProductPopup').modal('hide');
+			},
+			error : function(data) {
+				alert('Error' + data);
+			}
+		});
 	};
 
 	var calculateCost = function(){
