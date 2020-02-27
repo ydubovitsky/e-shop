@@ -23,7 +23,9 @@
 		<session-timeout>60</session-timeout>
 		<cookie-config>
 			<http-only>true</http-only>
-			<secure>true</secure>
+			<!--// The support for secure and http-only attribute is available only on http-servlet specification 3. Check that version attribute in your web.xml is "3.0".
+			Как я понимаю, если true, то доступ к идентификатору или самой сессии доступны только из сервлетов а в браузере мне не видим-->
+			<!--<secure>true</secure> // За что это отвечает, если true то в Application не видно параметра Session-->
 		</cookie-config>
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>

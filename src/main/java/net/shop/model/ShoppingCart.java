@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.shop.Constants;
@@ -15,7 +16,7 @@ public class ShoppingCart implements Serializable {
 	/**
 	 * Данное поле содержит id добавленного продукта и ссылку на shoppingCartItem
 	 */
-	private Map<Integer, ShoppingCartItem> products = new HashMap<>();
+	private Map<Integer, ShoppingCartItem> products = new LinkedHashMap<>(); //* Сохраняет порядок добавления
 	private int totalCount = 0;
 	private BigDecimal totalCost = BigDecimal.ZERO;
 

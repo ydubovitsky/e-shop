@@ -2,8 +2,8 @@
 ;$(function(){
 	var init = function (){
 		initBuyBtn();
-		$('#addProductPopup .count').change(calculateCost);
 		$('#addToCart').click(addProductToCart);
+		$('#addProductPopup .count').change(calculateCost);
 		$('#loadMore').click(loadMoreProducts);
 		initSearchForm();
 		$('#goSearch').click(goSearch);
@@ -28,42 +28,34 @@
 			show:true
 		});
 	};
-
 	var initBuyBtn = function(){
 		$('.buy-btn').click(showAddProductPopup);
 	};
-
-	/**
-	 * Функция добавления продуктов в корзину
-	 */
 	var addProductToCart = function (){
 		var idProduct = $('#addProductPopup').attr('data-id-product');
-		var currentTotalCount = $('#currentShoppingCart .total-count').text(); // текущее количество из корзины
-		var currentTotalCost = parseInt($('#currentShoppingCart .total-cost').text()); // текущая цена из корзины
-		var popUpCount = parseInt($('#addProductPopup .count').val()); // считаное значение из popUp
-		var popUpCost = parseInt(($('#addProductPopup .cost').text()).match(/\d+/)); // считаное значение из popUp
-		var url = '/ajax/json/product/add';
+		var count = $('#addProductPopup .count').val();
+		var btn = $('#addToCart');
+		convertButtonToLoader(btn, 'btn-primary');
 		$.ajax({
-			url : url,
+			url : '/ajax/json/product/add',
 			method : 'POST',
 			data : {
-				idProduct: idProduct,
-				count: popUpCount
+				idProduct : idProduct,
+				count : count
 			},
 			success : function(data) {
-				var sum = parseInt(data.totalCount,10) + parseInt(currentTotalCount, 10);
-				$('#currentShoppingCart .total-count').text("");
-				$('#total-count-header').text(sum); //! Эта чертова хрень не работаеТ!!!!
-				$('#currentShoppingCart .total-cost').text(currentTotalCost + data.totalCost);
+				$('#currentShoppingCart .total-count').text(data.totalCount);
+				$('#currentShoppingCart .total-cost').text(data.totalCost);
 				$('#currentShoppingCart').removeClass('hidden');
+				convertLoaderToButton(btn, 'btn-primary', addProductToCart);
 				$('#addProductPopup').modal('hide');
 			},
 			error : function(data) {
-				alert('Error' + data);
+				convertLoaderToButton(btn, 'btn-primary', addProductToCart);
+				alert('Error');
 			}
 		});
 	};
-
 	var calculateCost = function(){
 		var priceStr = $('#addProductPopup .price').text();
 		var price = parseFloat(priceStr.replace('$',' '));
@@ -79,6 +71,24 @@
 		}
 	};
 
+	var convertButtonToLoader = function (btn, btnClass) {
+		btn.removeClass(btnClass);
+		btn.removeClass('btn');
+		btn.addClass('load-indicator');
+		var text = btn.text();
+		btn.text('');
+		btn.attr('data-btn-text', text);
+		btn.off('click');
+	};
+	var convertLoaderToButton = function (btn, btnClass, actionClick) {
+		btn.removeClass('load-indicator');
+		btn.addClass('btn');
+		btn.addClass(btnClass);
+		btn.text(btn.attr('data-btn-text'));
+		btn.removeAttr('data-btn-text');
+		btn.click(actionClick);
+	};
+
 	/**
 	 * 		var pathname = window.location.pathname; // Returns path only (/path/example.html)
 	 // 	var url      = window.location.href;     // Returns full URL (https://example.com/path/example.html)
@@ -87,33 +97,29 @@
 	 // 	https://www.w3schools.com/jsref/prop_loc_search.asp
 	 */
 	var loadMoreProducts = function (){
-		console.log(location.pathname);
-		console.log(location.search);
-		$('#loadMore').addClass('hidden');
-		$('#loadMoreIndicator').removeClass('hidden');
-		var pageCount = parseInt($('#productList').attr("data-page-count"));
-		var pageNumber = parseInt($('#productList').attr("data-page-number"));
-		// (pageNumber + 1) - отправляет на сервер запрос текущая страница + 1
-		var url = '/ajax/html/more' + location.pathname + '?page=' + (pageNumber + 1) + "&" + location.search.substring(1);
+		var btn = $('#loadMore');
+		convertButtonToLoader(btn, 'btn-success');
+		var pageNumber = parseInt($('#productList').attr('data-page-number'));
+		var url = '/ajax/html/more' + location.pathname + '?page=' + (pageNumber + 1) + '&' + location.search.substring(1);
 		$.ajax({
 			url : url,
 			success : function(html) {
 				$('#productList .row').append(html);
-				pageNumber++; // Увеличиваем page number
-				if (pageNumber < pageCount) { // Если есть еще страницы для отображения
-					$('#productList').attr("data-page-number", pageNumber);
-				} else { // В противном случае удаляем кнопку
-					$('#loadMore').remove();
+				pageNumber++;
+				var pageCount = parseInt($('#productList').attr('data-page-count'));
+				$('#productList').attr('data-page-number', pageNumber);
+				if(pageNumber < pageCount) {
+					convertLoaderToButton(btn, 'btn-success', loadMoreProducts);
+				} else {
+					btn.remove();
 				}
-				$('#loadMoreIndicator').addClass('hidden');
-				$('#loadMore').removeClass('hidden');
 			},
 			error : function(data) {
-				alert('Error' + data);
+				convertLoaderToButton(btn, 'btn-success', loadMoreProducts);
+				alert('Error');
 			}
 		});
 	};
-
 	var initSearchForm = function (){
 		$('#allCategories').click(function(){
 			$('.categories .search-option').prop('checked', $(this).is(':checked'));
@@ -128,7 +134,6 @@
 			$('#allProducers').prop('checked', false);
 		});
 	};
-
 	var goSearch = function(){
 		var isAllSelected = function(selector) {
 			var unchecked = 0;
@@ -147,20 +152,17 @@
 		}
 		$('form.search').submit();
 	};
-
 	var confirm = function (msg, okFunction) {
 		if(window.confirm(msg)) {
 			okFunction();
 		}
 	};
-
 	var removeProductFromCart = function (){
 		var btn = $(this);
 		confirm('Are you sure?', function(){
 			executeRemoveProduct(btn);
 		});
 	};
-
 	var refreshTotalCost = function () {
 		var total = 0;
 		$('#shoppingCart .item').each(function(index, value) {
@@ -171,49 +173,41 @@
 		});
 		$('#shoppingCart .total').text('$'+total);
 	};
-
 	var executeRemoveProduct = function (btn) {
 		var idProduct = btn.attr('data-id-product');
 		var count = btn.attr('data-count');
-		btn.removeClass('btn-danger');
-		btn.removeClass('btn');
-		btn.addClass('load-indicator');
-		var text = btn.text();
-		btn.text('');
-		btn.off('click');
+		convertButtonToLoader(btn, 'btn-danger');
 
-		setTimeout(function(){
-			var data = {
-				totalCount : 1,
-				totalCost : 1
-			};
-			if(data.totalCount === 0) {
-				window.location.href = 'products.html';
-			} else {
-				var prevCount = parseInt($('#product'+idProduct+' .count').text());
-				var remCount = parseInt(count);
-				if(remCount === prevCount) {
-					$('#product'+idProduct).remove();
-
-					//
-					if($('#shoppingCart .item').length === 0) {
-						window.location.href = 'products.html';
-					}
-					//
+		$.ajax({
+			url : '/ajax/json/product/remove',
+			method : 'POST',
+			data : {
+				idProduct : idProduct,
+				count : count
+			},
+			success : function(data) {
+				if (data.totalCount == 0) {
+					window.location.href = '/products';
 				} else {
-					btn.removeClass('load-indicator');
-					btn.addClass('btn-danger');
-					btn.addClass('btn');
-					btn.text(text);
-					btn.click(removeProductFromCart);
-					$('#product'+idProduct+' .count').text(prevCount - remCount);
-					if(prevCount - remCount == 1) {
-						$('#product'+idProduct+' a.remove-product.all').remove();
+					var prevCount = parseInt($('#product' + idProduct + ' .count').text());
+					var remCount = parseInt(count);
+					if (remCount >= prevCount) {
+						$('#product' + idProduct).remove();
+					} else {
+						convertLoaderToButton(btn, 'btn-danger', removeProductFromCart);
+						$('#product' + idProduct + ' .count').text(prevCount - remCount);
+						if(prevCount - remCount == 1) {
+							$('#product' + idProduct + ' a.remove-all').remove();
+						}
 					}
+					refreshTotalCost();
 				}
-				refreshTotalCost();
+			},
+			error : function(data) {
+				convertLoaderToButton(btn, 'btn-danger', removeProductFromCart);
+				alert('Error');
 			}
-		}, 1000);
+		});
 	}
 
 	init();

@@ -22,7 +22,7 @@ public final class RoutingUtils {
 		req.getRequestDispatcher("/WEB-INF/JSP/page-template.jsp").forward(req, resp);
 	}
 
-	public static void sendJson(JSONObject jsonObject, HttpServletResponse resp) throws ServletException, IOException {
+	public static void sendJson(JSONObject jsonObject, HttpServletResponse resp) throws IOException {
 		resp.setContentType("application/json"); //? Заголовок?
 		resp.getWriter().println(jsonObject.toString());
 		resp.getWriter().close(); //? Все время ли нужно закрывать?
