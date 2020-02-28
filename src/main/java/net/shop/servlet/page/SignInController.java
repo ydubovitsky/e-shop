@@ -29,6 +29,7 @@ public class SignInController extends AbstractController {
         } else {
             //! Редирект на фейсбук
             RoutingUtils.redirect(getSocialService().getAuthorizeUrl(), req, resp);
+            //! Тут что важно, что в слушателе создается serviceManager, в котором в конструкторе создаются остальные сервисы, которые уже дальше используются в AbstractController
         }
     }
 }
