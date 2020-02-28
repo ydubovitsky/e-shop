@@ -1,13 +1,16 @@
 package net.shop.service.impl;
 
+import net.shop.entity.impl.Account;
 import net.shop.entity.impl.Product;
 import net.shop.exception.InternalServerErrorException;
 import net.shop.form.ProductForm;
 import net.shop.jdbc.JDBCUtils;
 import net.shop.jdbc.ResultSetFactory;
 import net.shop.jdbc.ResultSetHandler;
+import net.shop.model.CurrentAccount;
 import net.shop.model.ShoppingCart;
 import net.shop.model.ShoppingCartItem;
+import net.shop.model.SocialAccount;
 import net.shop.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +26,8 @@ class OrderServiceImpl implements OrderService {
 
     private static final ResultSetHandler<Product> productResultSetHandler
             = ResultSetFactory.getSingleResultHandler(ResultSetFactory.PRODUCT_RESULT_SET_HANDLER);
+    private static final ResultSetHandler<Account> accountResultSetHandler
+            = ResultSetFactory.getSingleResultHandler(ResultSetFactory.ACCOUNT_RESULT_SET_HANDLER);
 
     private DataSource dataSource;
 
@@ -98,5 +103,20 @@ class OrderServiceImpl implements OrderService {
             }
         }
         return shoppingCart.getItems().isEmpty() ? null : shoppingCart;
+    }
+
+    @Override
+    public CurrentAccount authenticate(SocialAccount socialAccount) {
+        try(Connection c = dataSource.getConnection()) {
+            Account account = JDBCUtils.select(c, "select * from account where email=?", accountResultSetHandler, socialAccount.getEmail());
+            if (account == null) {
+                account = new Account(socialAccount.getName(), socialAccount.getEmail());
+                account = JDBCUtils.insert(c, "insert into account values (nextval('account_seq'), ?, ?)", accountResultSetHandler, account.getName(), account.getEmail());
+                c.commit();
+            }
+            return account;
+        } catch (SQLException e) {
+            throw new InternalServerErrorException("Cant execute sql query " + e.getMessage(), e);
+        }
     }
 }

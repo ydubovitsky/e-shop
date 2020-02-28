@@ -1,4 +1,5 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" trimDirectiveWhitespaces="true"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <nav class="navbar navbar-default">
 	<div class="container-fluid">
@@ -24,7 +25,22 @@
 					</div>
 				</li>
 			</ul>
-			<a href="#" class="btn btn-primary navbar-btn navbar-right sign-in"><i class="fa fa-facebook-official" aria-hidden="true"></i> Sign in</a>
+			<c:choose>
+				<c:when test="${CURRENT_ACCOUNT != null}">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a>Welcome ${CURRENT_ACCOUNT.description}</a></li>
+						<li><a href="/my-orders">My Orders</a></li>
+						<li><a href="/sign-out">Sign out</a> </li>
+					</ul>
+				</c:when>
+				<c:otherwise>
+					<form action="/sign-in" method="post">
+						<button type="submit" class="btn btn-primary navbar-btn navbar-right sign-in">
+							<i class="fa fa-facebook-official" aria-hidden="true"></i> Sign in
+						</button>
+					</form>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</div>
 </nav>

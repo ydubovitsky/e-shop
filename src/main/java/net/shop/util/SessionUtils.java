@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.shop.Constants;
+import net.shop.model.CurrentAccount;
 import net.shop.model.ShoppingCart;
 
 /**
@@ -52,6 +53,16 @@ public class SessionUtils {
 	public static void updateCurrentShoppingCartCookie(String cookieValue, HttpServletResponse resp) {
 		WebUtils.setCookie(Constants.Cookie.SHOPPING_CART.getName(), cookieValue,
 				Constants.Cookie.SHOPPING_CART.getTtl(), resp);
+	}
+
+	public static CurrentAccount getCurrentAccount(HttpServletRequest req) {
+		return (CurrentAccount) req.getSession().getAttribute(Constants.CURRENT_ACCOUNT);
+	}
+	public static void setCurrentAccount(HttpServletRequest req, CurrentAccount currentAccount) {
+		req.getSession().setAttribute(Constants.CURRENT_ACCOUNT, currentAccount);
+	}
+	public static boolean isCurrentAccountCreated(HttpServletRequest req) {
+		return getCurrentAccount(req) != null;
 	}
 
 	private SessionUtils() {

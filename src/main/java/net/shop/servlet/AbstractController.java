@@ -8,27 +8,36 @@ import net.shop.form.ProductForm;
 import net.shop.form.SearchForm;
 import net.shop.service.OrderService;
 import net.shop.service.ProductService;
+import net.shop.service.SocialService;
 import net.shop.service.impl.ServiceManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractController extends HttpServlet {
-	private static final long serialVersionUID = -2031074947573473708L;
+
+	protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 	private ProductService productService;
 	private OrderService orderService;
+	private SocialService socialService;
 
 	@Override
 	public final void init() throws ServletException {
 		productService = ServiceManager.getInstance(getServletContext()).getProductService();
 		orderService = ServiceManager.getInstance(getServletContext()).getOrderService();
+		socialService = ServiceManager.getInstance(getServletContext()).getSocialService();
 	}
 
+	/**
+	 * Getters
+	 */
 	public final ProductService getProductService() {
 		return productService;
 	}
-
 	public final OrderService getOrderService() {
 		return orderService;
 	}
+	public final SocialService getSocialService() { return socialService; }
 
 	/**
 	 * Функция подсчитывает количество страниц с продуктами.

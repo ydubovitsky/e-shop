@@ -1,5 +1,6 @@
 package net.shop.jdbc;
 
+import net.shop.entity.impl.Account;
 import net.shop.entity.impl.Category;
 import net.shop.entity.impl.Producer;
 import net.shop.entity.impl.Product;
@@ -58,6 +59,17 @@ public class ResultSetFactory {
         @Override
         public Integer handler(ResultSet rs) throws SQLException {
             return rs.getInt("count");
+        }
+    };
+
+    public final static ResultSetHandler<Account> ACCOUNT_RESULT_SET_HANDLER = new ResultSetHandler<Account>() {
+        @Override
+        public Account handler(ResultSet rs) throws SQLException {
+            Account account = new Account();
+            account.setId(rs.getInt("id"));
+            account.setEmail(rs.getString("email"));
+            account.setName(rs.getString("name"));
+            return account;
         }
     };
 

@@ -2,6 +2,7 @@ package net.shop.service.impl;
 
 import net.shop.service.OrderService;
 import net.shop.service.ProductService;
+import net.shop.service.SocialService;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,15 @@ import java.util.Properties;
 public class ServiceManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceManager.class);
+
+	/**
+	 * Fields of class
+	 */
+	private final Properties applicationProperties = new Properties();
+	private final BasicDataSource dataSource;
+	private final ProductService productService;
+	private final OrderService orderService;
+	private final SocialService socialService;
 
 	/**
 	 * Создаем объект класса через Синглтон
@@ -32,7 +42,6 @@ public class ServiceManager {
 
 	/**
 	 * Getters
-	 * @return
 	 */
 	public ProductService getProductService() {
 		return productService;
@@ -42,6 +51,9 @@ public class ServiceManager {
 	}
 	public String getApplicationProperty(String key) {
 		return applicationProperties.getProperty(key);
+	}
+	public SocialService getSocialService() {
+		return socialService;
 	}
 
 	/**
@@ -55,11 +67,6 @@ public class ServiceManager {
 		}
 	}
 
-	private final Properties applicationProperties = new Properties();
-	private final BasicDataSource dataSource;
-	private final ProductService productService;
-	private final OrderService orderService;
-
 	/**
 	 * Constructor
 	 * @param context
@@ -67,13 +74,13 @@ public class ServiceManager {
 	private ServiceManager(ServletContext context) {
 		loadApplicationProperties();
 		dataSource =  createDataSource();
-		productService = new ProductServiceImpl(dataSource);
+		productService = new ProductServiceImpl(dataSource); //* Тут все конкретные имплементации
 		orderService = new OrderServiceImpl(dataSource);
+		socialService = new FacebookSocialService(this);
 	}
 
 	/**
 	 * Create and init DataSource
-	 * @return
 	 */
 	private BasicDataSource createDataSource() {
 		BasicDataSource dataSource = new BasicDataSource();

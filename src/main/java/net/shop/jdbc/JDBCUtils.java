@@ -55,5 +55,17 @@ public class JDBCUtils {
         }
     }
 
+    public static <T> T insert(Connection c, String sql, ResultSetHandler<T> resultSetHandler, Object... params) throws SQLException{
+        try(PreparedStatement ps = c.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            populatePreparedStatement(ps, params);
+            int result = ps.executeUpdate();
+            if (result != 1) {
+                throw new SQLException("Cant insert row to the database. Result=" + result);
+            }
+            ResultSet rs = ps.getGeneratedKeys(); //* Возвращает объект ResultSet
+            return resultSetHandler.handler(rs);
+        }
+    }
+
     private JDBCUtils() {}
 }

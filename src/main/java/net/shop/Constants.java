@@ -1,6 +1,7 @@
 package net.shop;
 
 public final class Constants {
+
 	public static final String CURRENT_SHOPPING_CART = "CURRENT_SHOPPING_CART";
 	
 	public static final int MAX_PRODUCT_COUNT_PER_SHOPPING_CART = 10;
@@ -16,7 +17,11 @@ public final class Constants {
 
 	public static final String PRODUCERS_LIST = "PRODUCERS_LIST";
 
-	public enum Cookie {
+	public static final String CURRENT_ACCOUNT = "CURRENT_ACCOUNT";
+
+
+
+	public enum Cookie { //? Что за метод?
 		//1 year ttl
 		SHOPPING_CART("iSCC", 60 * 60 * 24 * 365);
 
