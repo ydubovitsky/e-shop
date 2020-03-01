@@ -34,6 +34,9 @@ public final class RoutingUtils {
 		resp.getWriter().close();
 	}
 
+	/**
+	 * Просто делает редирект на url
+	 */
 	public static void redirect(String url, HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.sendRedirect(url);
 	}

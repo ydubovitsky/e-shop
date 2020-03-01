@@ -32,6 +32,19 @@ public final class WebUtils {
 		resp.addCookie(c);
 	}
 
+	/**
+	 * Возвращает текущий URL c параметрами
+	 */
+	public static String getCurrentRequestUrl(HttpServletRequest req) {
+		String query = req.getQueryString();
+		if (query == null) {
+			return req.getRequestURI();
+		} else {
+			return req.getRequestURI() + "?" + query; //! С параметрами запроса
+		}
+
+	}
+
 	private WebUtils() {
 	}
 }

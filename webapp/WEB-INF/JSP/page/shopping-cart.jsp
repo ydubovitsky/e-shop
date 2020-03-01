@@ -3,9 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <div id="shoppingCart">
-    <div class="alert alert-warning hidden-print" role="alert">To make order, please sign in</div>
+    <c:if test="${CURRENT_ACCOUNT == null}">
+        <div class="alert alert-warning hidden-print" role="alert">To make order, please sign in</div>
+    </c:if>
     <table class="table table-bordered">
         <thead>
         <tr>
@@ -42,7 +45,7 @@
     </table>
     <div class="row hidden-print">
         <div class="col-md-4 col-md-offset-4 col-lg-2 col-lg-offset-5">
-            <a class="btn btn-primary btn-block"><i class="fa fa-facebook-official" aria-hidden="true"></i> Sign in</a>
+            <tags:sign-in classes="btn btn-primary btn-block"/>
         </div>
     </div>
 </div>

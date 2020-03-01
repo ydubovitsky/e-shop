@@ -55,6 +55,16 @@ public class JDBCUtils {
         }
     }
 
+    public static void insertBatch(Connection c, String sql, List<Object[]> paramList) throws SQLException {
+        try(PreparedStatement p = c.prepareStatement(sql)) {
+            for (Object[] params : paramList) {
+                populatePreparedStatement(p, params); //* Заполнили PreparedStatement параметрами
+                p.addBatch();
+            }
+            p.executeBatch();
+        }
+    }
+
     public static <T> T insert(Connection c, String sql, ResultSetHandler<T> resultSetHandler, Object... params) throws SQLException{
         try(PreparedStatement ps = c.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             populatePreparedStatement(ps, params);

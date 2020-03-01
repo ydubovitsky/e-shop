@@ -8,6 +8,9 @@
 		initSearchForm();
 		$('#goSearch').click(goSearch);
 		$('.remove-product').click(removeProductFromCart);
+		$('.post-request').click(function() {
+			postRequest($(this).attr('data-url'));
+		});
 	};
 
 	var showAddProductPopup = function (){
@@ -218,6 +221,16 @@
 				alert('Error');
 			}
 		});
+	};
+
+	/**
+	 * Динамически создается форма и выполняется запрос
+	 * @param url - аргумент из var init = function () {}
+	 */
+	var postRequest = function(url) {
+		var form = '<form id="postRequestForm" action="'+url+'" method="post"></form>'; //? Зачем тут (+) +url+
+		$('body').append(form);
+		$('#postRequestForm').submit();
 	};
 
 	init();

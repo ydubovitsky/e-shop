@@ -21,6 +21,8 @@ public final class Constants {
 
 	public static final String SUCCESS_REDIRECT_URL_AFTER_SIGIN = "SUCCESS_REDIRECT_URL_AFTER_SIGIN";
 
+	public static final String CURRENT_REQUEST_URL = "CURRENT_REQUEST_URL";
+
 
 
 	public enum Cookie { //? Что за метод?

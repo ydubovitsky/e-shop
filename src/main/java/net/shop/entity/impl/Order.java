@@ -7,7 +7,7 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class Order extends AbstractEntity<BigInteger> {
+public class Order extends AbstractEntity<Long> {
 
     private Integer idAccount;
     private List<OrderItem> items;

@@ -1,6 +1,7 @@
 package net.shop.service.impl;
 
 import net.shop.entity.impl.Account;
+import net.shop.entity.impl.Order;
 import net.shop.entity.impl.Product;
 import net.shop.exception.InternalServerErrorException;
 import net.shop.form.ProductForm;
@@ -18,6 +19,10 @@ import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 class OrderServiceImpl implements OrderService {
@@ -28,6 +33,8 @@ class OrderServiceImpl implements OrderService {
             = ResultSetFactory.getSingleResultHandler(ResultSetFactory.PRODUCT_RESULT_SET_HANDLER);
     private static final ResultSetHandler<Account> accountResultSetHandler
             = ResultSetFactory.getSingleResultHandler(ResultSetFactory.ACCOUNT_RESULT_SET_HANDLER);
+    private static final ResultSetHandler<Order> orderResultSetHandler =
+            ResultSetFactory.getSingleResultHandler(ResultSetFactory.ORDER_RESULT_SET_HANDLER);
 
     private DataSource dataSource;
 
@@ -118,5 +125,38 @@ class OrderServiceImpl implements OrderService {
         } catch (SQLException e) {
             throw new InternalServerErrorException("Cant execute sql query " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * Сделать заказ
+     *
+     * @param shoppingCart   - принимает корзину пользователя
+     * @param currentAccount - текущего пользователя из сессии
+     * @return
+     */
+    @Override
+    public long makeOrder(ShoppingCart shoppingCart, CurrentAccount currentAccount) {
+        if (shoppingCart == null || shoppingCart.getItems().isEmpty()) {
+            throw new InternalServerErrorException("shopping cart is null or empty");
+        }
+        try(Connection c = dataSource.getConnection()){
+            Order order = JDBCUtils.insert(c, "insert into \"order\" values(nextval('order_seq'), ? , ?)", orderResultSetHandler,
+                    currentAccount.getId(), new Timestamp(System.currentTimeMillis()));
+            JDBCUtils.insertBatch(c, "insert into order_item values(nextval('order_item_seq'), ?, ?, ?)",
+                    toOrderItemParameterList(order.getId(), shoppingCart.getItems())); //! Для того чтобы заполнить таблицу order_item нужно: idOrder, item.getProduct().getId(), item.getCount()
+            c.commit();
+            return order.getId(); //?
+        } catch (SQLException e) {
+            throw new InternalServerErrorException("Cant execute sql query: " + e.getMessage(), e);
+        }
+    }
+
+
+    private List<Object[]> toOrderItemParameterList(long idOrder, Collection<ShoppingCartItem> items) {
+        List<Object[]> parameterList = new ArrayList<>();
+        for (ShoppingCartItem item : items) {
+            parameterList.add(new Object[]{idOrder, item.getProduct().getId(), item.getCount()});
+        }
+        return parameterList;
     }
 }

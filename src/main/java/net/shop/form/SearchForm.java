@@ -52,11 +52,15 @@ public class SearchForm {
         this.categories = categories;
     }
 
-    public boolean isCategoriesEmpty() {
-        return categories.isEmpty();
+    /**
+     * Категория не пуста? true, она не пуста. false - она пуста
+     * @return
+     */
+    public boolean isCategoriesNotEmpty() {
+        return !categories.isEmpty();
     }
 
-    public boolean isProducersEmpty() {
-        return producers.isEmpty();
+    public boolean isProducersNotEmpty() {
+        return !producers.isEmpty();
     }
 }

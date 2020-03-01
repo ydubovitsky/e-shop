@@ -18,4 +18,12 @@ public interface OrderService {
     void removeProductFromShoppingCart(ProductForm form, ShoppingCart shoppingCart);
 
     CurrentAccount authenticate(SocialAccount socialAccount);
+
+    /**
+     * Сделать заказ
+     * @param shoppingCart - принимает корзину пользователя
+     * @param currentAccount - текущего пользователя из сессии
+     * @return
+     */
+    long makeOrder (ShoppingCart shoppingCart, CurrentAccount currentAccount);
 }

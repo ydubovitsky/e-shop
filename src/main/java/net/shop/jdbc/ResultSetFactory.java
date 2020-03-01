@@ -1,9 +1,6 @@
 package net.shop.jdbc;
 
-import net.shop.entity.impl.Account;
-import net.shop.entity.impl.Category;
-import net.shop.entity.impl.Producer;
-import net.shop.entity.impl.Product;
+import net.shop.entity.impl.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -85,6 +82,35 @@ public class ResultSetFactory {
             }
         };
     }
+
+    //! Этот метод интересен тем, что в нем OrderItem присваивается поле объектом которого является другая таблица
+    public final static ResultSetHandler<OrderItem> ORDER_ITEM_RESULT_SET_HANDLER = new ResultSetHandler<OrderItem>() {
+        @Override
+        public OrderItem handler(ResultSet rs) throws SQLException {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setId(rs.getLong("id"));
+            orderItem.setIdOrder(rs.getLong("id_order"));
+            Product product = (PRODUCT_RESULT_SET_HANDLER.handler(rs)); //! Обарти внимание
+            orderItem.setProduct(product);
+            orderItem.setCount(rs.getInt("count"));
+            return orderItem;
+        }
+    };
+
+
+    /**
+     * Обработчик Order
+     */
+    public final static ResultSetHandler<Order> ORDER_RESULT_SET_HANDLER = new ResultSetHandler<Order>() {
+        @Override
+        public Order handler(ResultSet rs) throws SQLException {
+            Order order = new Order();
+            order.setId(rs.getLong("id"));
+            order.setCreated(rs.getTimestamp("created"));
+            order.setIdAccount(rs.getInt("id_account"));
+            return order;
+        }
+    };
 
     /**
      * Эти методы возвращают анонимные классы, реализующие интерфейсы interface ResultSetHandler<T>.
