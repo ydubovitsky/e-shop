@@ -2,8 +2,11 @@ package net.shop.service.impl;
 
 import net.shop.entity.impl.Account;
 import net.shop.entity.impl.Order;
+import net.shop.entity.impl.OrderItem;
 import net.shop.entity.impl.Product;
+import net.shop.exception.AccessDeniedException;
 import net.shop.exception.InternalServerErrorException;
+import net.shop.exception.ResourceNotFoundException;
 import net.shop.form.ProductForm;
 import net.shop.jdbc.JDBCUtils;
 import net.shop.jdbc.ResultSetFactory;
@@ -35,6 +38,12 @@ class OrderServiceImpl implements OrderService {
             = ResultSetFactory.getSingleResultHandler(ResultSetFactory.ACCOUNT_RESULT_SET_HANDLER);
     private static final ResultSetHandler<Order> orderResultSetHandler =
             ResultSetFactory.getSingleResultHandler(ResultSetFactory.ORDER_RESULT_SET_HANDLER);
+    private static final ResultSetHandler<List<Order>> listOrderResultSetHandler =
+            ResultSetFactory.getListResultSetHandler(ResultSetFactory.ORDER_RESULT_SET_HANDLER);
+    private static final ResultSetHandler<List<OrderItem>> listOrderItemResultSetHandler =
+            ResultSetFactory.getListResultSetHandler(ResultSetFactory.ORDER_ITEM_RESULT_SET_HANDLER);
+    private static final ResultSetHandler<Integer> countResultSetHandler =
+            ResultSetFactory.getSingleResultHandler(ResultSetFactory.COUNT_PRODUCT_RESULT_SET_HANDLER);
 
     private DataSource dataSource;
 
@@ -151,12 +160,60 @@ class OrderServiceImpl implements OrderService {
         }
     }
 
-
     private List<Object[]> toOrderItemParameterList(long idOrder, Collection<ShoppingCartItem> items) {
         List<Object[]> parameterList = new ArrayList<>();
         for (ShoppingCartItem item : items) {
             parameterList.add(new Object[]{idOrder, item.getProduct().getId(), item.getCount()});
         }
         return parameterList;
+    }
+
+    @Override
+    public List<Order> getListOrder() {
+        try(Connection c = dataSource.getConnection()) {
+            List<Order> orders = JDBCUtils.select(c, "select * from order", listOrderResultSetHandler);
+            return orders;
+        } catch (SQLException e) {
+            throw new InternalServerErrorException("Cant execute sql query " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Order findOrderById(long id, CurrentAccount currentAccount) {
+        try(Connection c = dataSource.getConnection()) {
+            Order order = JDBCUtils.select(c, "select * from \"order\" where id=?", orderResultSetHandler, id);
+            if (order == null) {
+                throw new ResourceNotFoundException("Order not found by id: " + id);
+            }
+            if (!order.getIdAccount().equals(currentAccount.getId())) {
+                throw new AccessDeniedException("Account with id " + currentAccount.getId() + " is not owner of order with id = " + order.getId());
+            }
+            List<OrderItem> orderItems = JDBCUtils.select(c, "select o.id as oid, o.id_order as id_order, o.id_product, o.count, p.*, c.name as category, pr.name as producer from order_item o, product p, category c, producer pr where pr.id=p.id_producer and c.id=p.id_category and o.id_product=p.id and o.id_order=?", listOrderItemResultSetHandler, id);
+            order.setItems(orderItems);
+            return order;
+        } catch (SQLException e) {
+            throw new InternalServerErrorException("Cant execute sql query " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<Order> listMyOrders(CurrentAccount account, int page, int limit) {
+        int offset = (page - 1) * limit;
+        try(Connection c = dataSource.getConnection()) {
+            List<Order> orders = JDBCUtils.select(c, "select * from \"order\" where id_account=? limit ? offset ?",
+                    listOrderResultSetHandler, account.getId(), limit, offset);
+            return orders;
+        } catch (SQLException e) {
+            throw new InternalServerErrorException("Cant execute sql query " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public int countMyOrders(CurrentAccount account) {
+        try(Connection c = dataSource.getConnection()) {
+            return JDBCUtils.select(c, "select count(*) from \"order\" where id_account=?", countResultSetHandler, account.getId());
+        } catch (SQLException e) {
+            throw new InternalServerErrorException("Cant execute sql query " + e.getMessage(), e);
+        }
     }
 }

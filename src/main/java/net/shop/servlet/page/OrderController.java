@@ -1,5 +1,6 @@
 package net.shop.servlet.page;
 
+import net.shop.entity.impl.Order;
 import net.shop.model.ShoppingCart;
 import net.shop.servlet.AbstractController;
 import net.shop.util.RoutingUtils;
@@ -30,6 +31,11 @@ public class OrderController extends AbstractController {
         String message = (String) req.getSession().getAttribute(CURRENT_MESSAGE);
         req.getSession().removeAttribute(CURRENT_MESSAGE); //? Зачем из сессии удалять?
         req.setAttribute(CURRENT_MESSAGE, message);
+        Order order = getOrderService().findOrderById(
+                Long.parseLong(req.getParameter("id")), //! из метода doPost - "/order?id="
+                SessionUtils.getCurrentAccount(req)
+        );
+        req.setAttribute("order", order);
         RoutingUtils.forwardToPage("order.jsp", req, resp);
     }
 }

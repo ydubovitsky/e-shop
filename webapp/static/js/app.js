@@ -11,6 +11,7 @@
 		$('.post-request').click(function() {
 			postRequest($(this).attr('data-url'));
 		});
+		$('#loadMoreMyOrders').click(loadMoreMyOrders);
 	};
 
 	var showAddProductPopup = function (){
@@ -231,6 +232,31 @@
 		var form = '<form id="postRequestForm" action="'+url+'" method="post"></form>'; //? Зачем тут (+) +url+
 		$('body').append(form);
 		$('#postRequestForm').submit();
+	};
+
+	var loadMoreMyOrders = function (){
+		var btn = $('#loadMoreMyOrders');
+		convertButtonToLoader(btn, 'btn-success');
+		var pageNumber = parseInt($('#myOrders').attr('data-page-number'));
+		var url = '/ajax/html/more/my-orders?page=' + (pageNumber + 1);
+		$.ajax({
+			url : url,
+			success : function(html) {
+				$('#myOrders tbody').append(html);
+				pageNumber++;
+				var pageCount = parseInt($('#myOrders').attr('data-page-count'));
+				$('#myOrders').attr('data-page-number', pageNumber);
+				if(pageNumber < pageCount) {
+					convertLoaderToButton(btn, 'btn-success', loadMoreMyOrders);
+				} else {
+					btn.remove();
+				}
+			},
+			error : function(data) {
+				convertLoaderToButton(btn, 'btn-success', loadMoreMyOrders);
+				alert('Error');
+			}
+		});
 	};
 
 	init();

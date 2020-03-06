@@ -45,7 +45,14 @@
     </table>
     <div class="row hidden-print">
         <div class="col-md-4 col-md-offset-4 col-lg-2 col-lg-offset-5">
-            <tags:sign-in classes="btn btn-primary btn-block"/>
+            <c:choose>
+                <c:when test="${CURRENT_ACCOUNT != null}">
+                    <a href="javascript:void(0);" class="post-request btn btn-primary btn-block" data-url="/order">Make Order</a>
+                </c:when>
+                <c:otherwise>
+                    <tags:sign-in classes="btn btn-primary btn-block"/>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </div>

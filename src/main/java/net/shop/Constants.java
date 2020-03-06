@@ -23,6 +23,8 @@ public final class Constants {
 
 	public static final String CURRENT_REQUEST_URL = "CURRENT_REQUEST_URL";
 
+	public static final Integer ORDERS_PER_PAGE = 5;
+
 
 
 	public enum Cookie { //? Что за метод?
